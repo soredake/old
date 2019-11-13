@@ -1,0 +1,7 @@
+[Unit]
+Description=Update zsh-syntax-highlighting
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/git --git-dir=%h/.local/share/zsh-syntax-highlighting/.git --work-tree=%h/.local/share/zsh-syntax-highlighting pull

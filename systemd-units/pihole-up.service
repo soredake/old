@@ -1,0 +1,7 @@
+[Unit]
+Description=Update pihole
+After=network-online.target docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/docker exec pihole pihole updateGravity

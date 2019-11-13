@@ -1,0 +1,81 @@
+# vim: ft=muttrc
+set sidebar_visible
+set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
+set mail_check_stats
+set imap_check_subscribed
+bind index,pager B sidebar-toggle-visible   # Use 'B' to switch the Sidebar on and off
+set sidebar_short_path                  # Shorten mailbox names
+set sidebar_delim_chars="/"             # Delete everything up to the last / character
+set sidebar_folder_indent               # Indent folders whose names we've shortened
+set sidebar_indent_string="  "          # Indent with two spaces
+
+# Store message headers locally to speed things up.
+# If hcache is a folder, Mutt will create sub cache folders for each account which may speeds things up even more.
+set header_cache = ~/.cache/mutt
+
+set ssl_verify_partial_chains = yes
+set certificate_file = ~/.cache/mutt/certificates
+
+set tmpdir = `echo \$XDG_RUNTIME_DIR`
+
+# Store messages locally to speed things up, like searching message bodies.
+# Can be the same folder as header_cache.
+# This will cost important disk usage according to your e-mail amount.
+set message_cachedir = "~/.cache/mutt"
+
+# Allow Mutt to open new imap connection automatically.
+unset imap_passive
+
+# Keep IMAP connection alive by polling intermittently (time in seconds).
+set imap_keepalive = 300
+
+# How often to check for new mail (time in seconds).
+set mail_check = 120
+
+# Ctrl-n, Ctrl-p to select next, previous folder.
+# Ctrl-o to open selected folder.
+bind index,pager \CP sidebar-prev
+bind index,pager \CN sidebar-next
+bind index,pager \CO sidebar-open
+
+set editor=`echo \$EDITOR`
+
+#set charset = "utf-8"
+
+# mail check and timeout
+set mail_check=90
+set timeout=15
+
+auto_view text/html
+
+# Sven's draconian header weeding
+ignore *
+unignore from date subject to cc
+unignore organization organisation x-mailer: x-newsreader: x-mailing-list:
+unignore posted-to:
+
+# Folder hooks
+folder-hook 'maledom.autistici.org' 'source ~/.local/share/mail/mail1'
+folder-hook 'yuno.cock.li' 'source ~/.local/share/mail/mail2'
+
+# Default account
+source ~/.local/share/mail/mail1
+
+# Macros for switching accounts
+macro index <f2> '<sync-mailbox><enter-command>source ~/.local/share/mail/mail1<enter><change-folder>!<enter>'
+macro index <f3> '<sync-mailbox><enter-command>source ~/.local/share/mail/mail2<enter><change-folder>!<enter>'
+
+# Fetch mail shortcut
+bind index "^" imap-fetch-mail
+
+macro index 'c' '<change-folder>?<change-dir><home>^K=<enter>'
+
+# https://github.com/neomutt/neomutt/issues/276
+macro compose v "<edit-from>^Uidentity_<tab>" "Select from"
+set reverse_name # http://www.mutt.org/doc/manual/#reverse-name
+
+set edit_headers   # let me edit the message header when composing
+
+# prefer plaintext to html
+#auto_view text/html
+alternative_order text/plain text/html

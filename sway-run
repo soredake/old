@@ -1,0 +1,22 @@
+#!/bin/bash
+# Sway env
+export XKB_DEFAULT_LAYOUT=us,ru
+export XKB_DEFAULT_MODEL=pc104
+export XKB_DEFAULT_VARIANT=qwerty
+export XKB_DEFAULT_OPTIONS=grp:rctrl_toggle
+
+fullwayland=0
+
+if [[ "$fullwayland" == "1" || "$1" == "f" ]]; then
+  # Wayland env, https://github.com/swaywm/sway/wiki/Running-programs-natively-under-wayland
+  export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
+  export _JAVA_AWT_WM_NONREPARENTING=1
+  export QT_QPA_PLATFORM=wayland
+  #export QT_QPA_PLATFORM=wayland-egl
+  export GDK_BACKEND=wayland
+  export SDL_VIDEODRIVER=wayland
+  export CLUTTER_BACKEND=wayland
+  export ECORE_EVAS_ENGINE=wayland_egl
+  #export ECORE_EVAS_ENGINE=wayland_shm
+fi
+exec sway &>"$HOME/.local/share/sway.log"

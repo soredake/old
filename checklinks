@@ -1,0 +1,31 @@
+#!/bin/bash
+test() {
+    whitelist_sites="ex.org"
+    [[ "$1" =~ $whitelist_sites ]] && exit 1
+    unset result redirect
+    result=( $(curl -K "$XDG_CONFIG_HOME/curlrc" --http2 --no-keepalive --connect-timeout 15 --max-time 15 -o /dev/null --silent --write-out "%{http_code} %{url_effective}" "$1") )
+    if [[ ${result[0]} == 301 ]]; then
+      result[1]=$(curl -I -K "$XDG_CONFIG_HOME/curlrc" --http2 --no-keepalive --connect-timeout 15 --max-time 15 -o /dev/null --silent --write-out "%{url_effective}" "$1")
+    fi
+    if ! [[ ${result[1]} == "$1" ]]; then 
+      redirect=", redirected to \e[0m\e[4m\e[33m${result[1]}\e[0m"
+    fi 
+    # shellcheck disable=SC2043
+    for wl_code in 200; do 
+    if ! [[ ${result[0]} == "${wl_code}" ]]; then
+      [[ ${result[0]} == 000 ]] && result[0]="can't resolve domain"
+      echo -e "${1} \e[2m->\e[0m \e[31m${result[0]}\e[0m${redirect}"
+    fi
+    done
+}
+
+dooo() {
+  # read file
+  while read -r char; do
+    test "$char" &
+    [[ $(jobs | wc -l) -gt 3 ]] && sleep 5
+  done < "${1}"
+}
+
+dooo "${1}"
+wait

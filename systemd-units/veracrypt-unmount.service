@@ -1,0 +1,11 @@
+[Unit]
+Description=Unmount VeraCrypt volumes and containers
+DefaultDependencies=no
+Before=umount.target shutdown.target reboot.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/veracrypt -t -d
+
+[Install]
+WantedBy=umount.target shutdown.target reboot.target

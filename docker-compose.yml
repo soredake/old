@@ -1,0 +1,10 @@
+version: '3'
+services:
+  archisteamfarm:
+    container_name: asf
+    restart: always
+    image: "justarchi/archisteamfarm:released"
+    # https://github.com/JustArchi/ArchiSteamFarm/issues/797#issuecomment-392178129
+    # https://github.com/JustArchi/ArchiSteamFarm/wiki/Docker
+    volumes:
+     - /home/bausch/Documents/asf:/app/config

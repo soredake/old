@@ -1,0 +1,22 @@
+#!/bin/bash
+# DBUS_SESSION_BUS_ADDRESS is needed to stop steam from launching internal dbus copy
+# libgcc_s is for steam client (CXXABI)
+# libdbus-1 to fix tray icon under newer dbus
+# 32 bit libstdc++ is for steam client (nouveau driver)
+# 64 bit libstdc++ is for life is strange
+
+# https://developer.valvesoftware.com/wiki/Command_Line_Options
+# https://support.steampowered.com/kb_article.php?ref=1040-JWMT-2947
+# https://support.steampowered.com/kb_article.php?ref=5623-QOSV-5250
+
+# forgets language settings
+params="-language \"russian\""
+# usually login timeouts in udp mode
+#params+=" -tcp"
+# silent, pls
+params+=" -silent"
+
+#exec firejail --profile="$XDG_CONFIG_HOME/firejail/steam.profile" -- env DBUS_SESSION_BUS_ADDRESS=unix:path="${XDG_RUNTIME_DIR}/bus" LD_PRELOAD='/usr/lib/libdbus-1.so.3:/usr/lib/gcc/x86_64-pc-linux-gnu/7.2.0/32/libgcc_s.so.1:/usr/lib/gcc/x86_64-pc-linux-gnu/7.2.0/32/libstdc++.so.6:/usr/lib/gcc/x86_64-pc-linux-gnu/7.2.0/libstdc++.so.6' STEAM_RUNTIME_PREFER_HOST_LIBRARIES=0 LIBGL_DEBUG=verbose steam "${params}" "$@"
+
+#LD_PRELOAD='/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.0/32/libstdc++.so.6'
+eval exec firejail --profile="$XDG_CONFIG_HOME/firejail/steam.profile" -- env DBUS_SESSION_BUS_ADDRESS=unix:path="${XDG_RUNTIME_DIR}/bus" steam "${params}" "$@"

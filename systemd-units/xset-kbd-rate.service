@@ -1,0 +1,9 @@
+[Unit]
+Description=Set keyboard rate through xset
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/xset r rate 200 30
+
+[Install]
+WantedBy=graphical.target

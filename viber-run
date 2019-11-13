@@ -1,0 +1,2 @@
+#!/bin/bash
+exec firejail --private-bin=viber --ignore=protocol --private-etc=ld.so.cache --profile=/etc/firejail/Viber.profile -- viber "$@"

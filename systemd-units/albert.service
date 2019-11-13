@@ -1,0 +1,12 @@
+[Unit]
+Description=Albert omnilauncher
+
+[Service]
+EnvironmentFile=%h/.local/share/local.env
+ExecStart=/usr/bin/albert
+#https://unix.stackexchange.com/a/207572
+KillMode=process
+Restart=on-abort
+
+[Install]
+WantedBy=graphical.target

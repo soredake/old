@@ -1,0 +1,17 @@
+[Unit]
+Description=rtorrent
+After=network.target
+RequiresMountsFor=/media/disk0
+ConditionPathExists=/media/disk0/torrents
+
+[Service]
+LimitNOFILE=10240
+Type=forking
+Environment=TMUX_TMPDIR=%t
+ExecStartPre=/bin/bash -c "if test -e %h/.local/share/rtorrent/session/rtorrent.lock && test -z $(pidof rtorrent); then rm -f %h/.local/share/rtorrent/session/rtorrent.lock; fi"
+ExecStart=/usr/bin/tmux -f %h/.config/tmux/tmux.conf -L rt new-session -s rt -n rtorrent -d rtorrent -n -o import=~/.config/rtorrent/rtorrent.rc
+ExecStop=/bin/bash -c "/usr/bin/tmux -f %h/.config/tmux/tmux.conf -L rt send-keys -t rt:rtorrent.0 C-q; while pidof rtorrent > /dev/null; do echo stopping rtorrent...; sleep 1; done"
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

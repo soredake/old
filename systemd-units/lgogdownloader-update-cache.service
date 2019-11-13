@@ -1,0 +1,6 @@
+[Unit]
+Description=Update gog games cache
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/lgogdownloader --update-cache

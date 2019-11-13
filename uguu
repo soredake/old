@@ -1,0 +1,9 @@
+#!/bin/bash
+# https://stackoverflow.com/a/10060342
+# 100mb max
+# stores for 24 hours
+# tor upload blocked
+#proxy="proxychains"
+cl() { curl --socks5-hostname 127.0.0.1:9250 "$@"; }
+if [[ "$1" =~ ^http?[s]://.*$ ]]; then prefix="cl ${1}"; else suffix="${1}"; fi
+"${prefix:-true}" | curl --progress-bar -F name="${2:-$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1 | grep -i '[a-zA-Z0-9]').${1##*.}}" -F file=@"${suffix:--}" https://uguu.se/api.php?d=upload-tool

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [[ "$1" =~ ^https?://.*$ ]]; then
+  cd /tmp || exit 1
+  file="$(mktemp -t XXX."${1##*.}")"
+  curl --fail -L --progress-bar --socks5-hostname 127.0.0.1:9250 -o "${file}" "${1}" || exit 1
+else
+  file="$(mktemp -ut XXX."${1##*.}")"
+  ln -s "${1}" "${file}"
+fi
+curl --fail -L --progress-bar --socks5-hostname 127.0.0.1:9250 -F file=@"${file}" https://file.lewd.se | jq -r '.url'
+
+[[ -f "${file}" ]] && rm -f "${file}"

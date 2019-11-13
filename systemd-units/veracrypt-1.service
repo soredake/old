@@ -1,0 +1,12 @@
+[Unit]
+Description=VeraCrypt container mount service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStartPre=-/usr/bin/veracrypt -d
+ExecStart=/bin/bash -c '/usr/bin/veracrypt --protect-hidden=no -k "" `systemd-ask-password --no-tty "Please enter password for truecrypt volume"` -v /home/bausch/mdata/syncthing/arch/3 /home/bausch/media/veracrypt1'
+ExecStop=/usr/bin/veracrypt -d
+
+[Install]
+WantedBy=multi-user.target

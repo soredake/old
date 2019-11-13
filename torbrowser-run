@@ -1,0 +1,13 @@
+#!/bin/bash
+# shellcheck disable=1090
+. "${XDG_DATA_HOME}/local.env"
+export TOR_CONTROL_PORT
+export TOR_CONTROL_HOST
+export TOR_CONTROL_PASSWD
+if [[ ! $(pgrep -f "torbrowser --allow-remote") ]]; then
+  exec torbrowser --allow-remote --ProfileManager "$@"
+elif [[ "$*" =~ http[s]?:// ]]; then
+  exec torbrowser --allow-remote "$@"
+else
+  exec torbrowser --ProfileManager "$@"
+fi

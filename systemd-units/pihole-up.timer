@@ -1,0 +1,10 @@
+[Unit]
+Description=Run pihole update every two days
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+ 
+[Install]
+WantedBy=timers.target
+

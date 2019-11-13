@@ -1,0 +1,7 @@
+xinput | grep -E "A4TECH.*pointer" | awk -F 'id=' '{print $2}'
+xinput | grep -E "A4TECH.*pointer" | awk '{print $6}' | grep "[0-910-19]+"
+xinput | grep -E "A4TECH.*pointer" | awk -F 'id=' '{print $2}' |
+xinput | grep -E "A4TECH.*pointer" | awk '{print $6}' | grep "[0-910-19]" -o
+
+
+old working: $(xinput | grep A4TECH | grep pointer | egrep -o "id=[0-910-19]+" | sed "s/id=//g")

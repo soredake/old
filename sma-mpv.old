@@ -1,0 +1,39 @@
+#!/bin/bash
+
+url="${1}"
+number="${url##*-}"
+
+if df /mnt/c &>/dev/null; then
+  # https://stackoverflow.com/a/54642295
+  # https://www.rapidee.com/en/environment-variables
+  tmpfolder=$(cmd.exe /C "echo %USERPROFILE%"|sed $'s/\r$//')'\Documents\'
+  mpvexe="/mnt/c/mpv/mpv.exe"
+  curlexe="curl.exe"
+  wsl=1
+else
+  tmpfolder="/tmp/"
+  mpvexe="mpv"
+  curlexe="curl"
+fi
+
+curlsub() {
+  eval ${curlexe} -so '${tmpfolder}sub.ass' https://smotretanime.ru/translations/ass/${number}?download=1
+}
+
+pagetitle() {
+  curl -s "${url}" | grep -o -P '(?<=\"og:title\" content\=\").*(?=" />)'
+}
+
+#for res in 1080 720 480 360; do
+#  result="$(curl -sI https://smotretanime.ru/translations/mp4/${number}?format=mp4\&height=${res} | head -n1)"
+#  if grep 302 <<< "${result}" &>/dev/null; then
+#    echo "max res is ${res}, using it"; break
+#    maxres="${res}"
+#  elif grep 404 <<< "${result}" &>/dev/null; then
+#    echo "${res}" is not available
+#  fi
+#done
+
+curlsub
+eval "${mpvexe} --demuxer-readahead-secs=6000 --cache-secs=600 --sub-file='${tmpfolder}sub.ass' --title='$(pagetitle)' https://smotretanime.ru/translations/mp4/${number}?format=mp4\&height\=${2}"
+[[ "${wsl}" == 1 ]] && rm '${tmpfolder?}sub.ass'

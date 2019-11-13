@@ -1,0 +1,9 @@
+[Unit]
+Description=Set dpms timeout through xset
+
+[Service]
+ExecStart=/usr/bin/xset dpms 600
+Type=oneshot
+
+[Install]
+WantedBy=graphical.target

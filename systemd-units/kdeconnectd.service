@@ -1,0 +1,10 @@
+[Unit]
+Description=Kde connect daemon
+
+[Service]
+Environment=BROWSER=firefox
+ExecStart=/usr/lib/kdeconnectd
+Restart=on-abort
+
+[Install]
+WantedBy=default.target

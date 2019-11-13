@@ -1,0 +1,3 @@
+alternative_order text/enriched text/plain text application/postscript image/*
+image/jpeg; mpv --profile=image '%s'; description=JPG image; nametemplate=%s.jpg
+text/html; w3m -I %{charset} -T text/html; copiousoutput;

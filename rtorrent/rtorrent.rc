@@ -1,0 +1,59 @@
+### vim: tw=0 cc=0 ft=ampl smc=120 fdm=marker fen:
+# https://github.com/trapd00r/configs/blob/master/rtorrent.rc#L2
+
+# Default directory to save the downloaded torrents.
+#
+#directory.default.set = ~/media/torrents
+directory = /media/disk0/torrents
+
+# Default session directory. Make sure you don't run multiple instance
+# of rtorrent using the same session directory. Perhaps using a
+# relative path?
+#
+#session.path.set = ~/.local/share/rtorrent/session
+session = ~/.local/share/rtorrent/session
+
+# Check hash for finished torrents.
+#
+#pieces.hash.on_completion.set = yes
+check_hash = no
+
+# Set whether the client should try to connect to UDP trackers.
+#
+#trackers.use_udp.set = yes
+use_udp_trackers = yes
+
+# Encryption options, set to none (default) or any combination of the following:
+# allow_incoming, try_outgoing, require, require_RC4, enable_retry, prefer_plaintext
+#
+# The example value allows incoming encrypted connections, starts unencrypted
+# outgoing connections but retries with encryption if they fail, preferring
+# plaintext to RC4 encryption after the encrypted handshake
+# @TODO: this line breaks some torrents download https://github.com/rakshasa/rtorrent/issues/645 
+#protocol.encryption.set = try_outgoing,allow_incoming,enable_retry
+# see also: https://github.com/rakshasa/rtorrent/issues/603
+# this settings needed to fix this issue https://github.com/rakshasa/rtorrent/issues/602#issuecomment-300064177
+#protocol.encryption.set = allow_incoming,prefer_plaintext,enable_retry
+
+#dht.mode.set = auto
+dht = auto
+#protocol.pex.set = yes
+peer_exchange = yes
+
+# Set downlad list layout style. ("full", "compact")
+#
+#ui.torrent_list.layout.set = "compact"
+view.collapsed.toggle=main
+view.collapsed.toggle=started
+view.collapsed.toggle=stopped
+view.collapsed.toggle=complete
+view.collapsed.toggle=incomplete
+view.collapsed.toggle=hashing
+view.collapsed.toggle=seeding
+view.collapsed.toggle=leeching
+view.collapsed.toggle=active
+
+# Sort the main view by name
+view.sort_current = main,less=d.get_name=
+view.sort_new = main,less=d.get_name=
+view.sort = main

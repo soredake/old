@@ -1,0 +1,11 @@
+[Unit]
+Description=invert output
+After=pulseaudio.service
+Requires=pulseaudio.service
+
+[Service]
+Type=simple
+ExecStart=/bin/bash %h/bin/output-change.sh
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,9 @@
+[Unit]
+Description=Kde connect notifier
+
+[Service]
+ExecStart=/usr/bin/plasmawindowed org.kde.kdeconnect --statusnotifier
+Restart=on-abort
+
+[Install]
+WantedBy=graphical.target

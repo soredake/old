@@ -1,0 +1,9 @@
+[Unit]
+Description=Albert omnilauncher
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/xrandr --output HDMI-0 --auto --primary
+
+[Install]
+WantedBy=graphical.target

@@ -1,0 +1,11 @@
+[Unit]
+Description=keyboard library for per-window keyboard layout
+Documentation=https://github.com/qnikst/kbdd
+
+[Service]
+Type=dbus
+BusName=ru.gentoo.KbddService
+ExecStart=/usr/bin/kbdd -n
+
+[Install]
+WantedBy=default.target
