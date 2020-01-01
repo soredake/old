@@ -1,0 +1,12 @@
+#!/bin/bash
+if [[ ${1} == "l" ]]; then path="$HOME/sync/main/Screens"; else path=/dev/shm; fi
+file="${path}/$(LANG=en date +%d-%m-%Y_%X)".png
+maim -s "${file}"
+if [[ -e "${file}" ]]; then
+  notify-send "Screenshot saved to ${file}"
+else
+  echo "Something went wrong, your screenshot is not saved" && exit 1
+fi
+if [[ ${1} != "l" ]]; then
+  xsel -ib <<< "$(cockfile "${file}")"
+fi

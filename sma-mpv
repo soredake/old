@@ -1,0 +1,91 @@
+#!/bin/bash
+
+url="${1}"
+number="${url##*-}"
+res=${3}
+
+if df /mnt/c &>/dev/null; then
+  # https://stackoverflow.com/a/54642295
+  # https://www.rapidee.com/en/environment-variables
+  # tmpfolder=$(cmd.exe /C "echo %USERPROFILE%"|sed $'s/\r$//')'\Documents\'
+  #user=$(cmd.exe /C "echo %USERPROFILE%"|sed -e 's,C:\\Users\\,,g' -e $'s/\r$//')
+  user=$(cmd.exe /C "echo %USERNAME%"|sed $'s/\r$//')
+  tmpfolder=/mnt/c/Users/${user}/Documents/
+  mpvexe="/mnt/c/mpv/mpv.exe"
+  wsl=1smotret-anime.online
+else
+  tmpfolder="/tmp/"
+  mpvexe="mpv";
+fi
+
+curlsub() {
+  curl -so ${tmpfolder}${1}.ass https://smotret-anime.online/translations/ass/${1}?download=1
+  echo "${1}"
+}
+
+pagetitle() {
+  titlepage=$(curl -s "${1}" | grep -o -P '(?<=\"og:title\" content\=\").*(?=" />)')
+  # https://www.tek-tips.com/viewthread.cfm?qid=1524347
+  newpagetitle=$(echo ${titlepage} | awk '{gsub(/[:\t]/,"_");print}' | awk '{gsub(/[ \t]/,"_");print}' | awk '{gsub(/[,\t]/,"_");print}' | awk '{gsub(/[&\t]/,"_");print}' | awk '{gsub(/[;\t]/,"_");print}')
+  echo ${newpagetitle}
+}
+
+getnextepisode() {
+  # https://stackoverflow.com/questions/13242469/how-to-use-sed-grep-to-extract-text-between-two-words
+  nextepisode=$(curl -s ${url} | grep -o -P '(?<=href=").*(?="><i class="material-icons right">chevron_right<)' | head -n1) && echo "https://smotret-anime.online"${nextepisode##*href=\"}
+}
+
+getnumber() {
+  echo "${1##*-}"
+}
+
+play() {
+  echo "https://smotret-anime.online/translations/mp4/${1}?format=mp4&height=${2}"
+}
+
+writeplaylist() {
+  tee -a ${tmpfolder}playlist >/dev/null <<END
+loadfile ${1} append sub-file=/tmp/${2}.ass,title=${3}
+END
+}
+
+#tee ${tmpfolder}playlist >/dev/null <<< "loadfile https://example.com replace sub-file=/tmp/ass.ass"
+
+# clean playlist file
+echo "" >${tmpfolder}playlist
+
+# always write first episode to playlist
+writeplaylist "$(play ${number} ${res})" "$(curlsub ${number})" "$(pagetitle ${url})"
+
+if [[ -n  "${2}" ]]; then
+  for ((n=0;n<${2};n++)); do
+    [[ -n ${nex1} ]] && url=${nex1}
+    echo "current url: ${url}"
+    nextepurl=$(getnextepisode ${url}) # getting next episode url from current episode url
+    [[ "${nextepurl}" == "https://smotret-anime.online" ]] && break
+    # https://stackoverflow.com/questions/3074288/get-final-url-after-curl-is-redirected
+    nextepurlredirected=$(curl -e "${url}" -Ls -o /dev/null -w %{url_effective} ${nextepurl}) # getting redirected next episode url
+    echo "next episode url: ${nextepurlredirected}"
+    nextepnumber=$(getnumber ${nextepurlredirected}) # getting next episode number from next episode url
+    echo "next episode number: ${nextepnumber}"
+    
+    writeplaylist "$(play ${nextepnumber} ${res})" "$(curlsub ${nextepnumber})" "$(pagetitle ${nextepurlredirected})" # write next episode info to playlist
+    
+    # info for new iteration
+    export nex1=${nextepurlredirected}
+  done
+fi
+
+
+#for res in 1080 720 480 360; do
+#  result="$(curl -sI https://smotret-anime.online/translations/mp4/${number}?format=mp4\&height=${res} | head -n1)"
+#  if grep 302 <<< "${result}" &>/dev/null; then
+#    echo "max res is ${res}, using it"; break
+#    maxres="${res}"
+#  elif grep 404 <<< "${result}" &>/dev/null; then
+#    echo "${res}" is not available
+#  fi
+#done
+
+[[ $wsl == "1" ]] && tmpfolder=C:\\Users\\${user}\\Documents\\
+eval "nohup ${mpvexe} --demuxer-readahead-secs=6000 --cache-secs=600 non-exist --msg-level=all=info --input-file=${tmpfolder}playlist &>/tmp/mpv-log &"

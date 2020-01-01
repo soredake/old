@@ -1,0 +1,2 @@
+'atom-text-editor':
+  'ctrl-shift-a': 'link:open'

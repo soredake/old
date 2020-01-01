@@ -1,0 +1,8 @@
+#!/bin/bash
+die() { notify-send "${1}"; exit 1; }
+notify-send "Downloading ${1}"
+cd "$HOME/Downloads" || die "Error at cd"
+#PROXYCHAINS_CONF_FILE="$XDG_CONFIG_HOME/proxychains.conf" proxychains -q 
+do1() { wget "${1}" || die "Error downloading ${1}"; }
+do2() { aria2c -x 14 -s 6 -m 3 "${1}" || die "Error downloading ${1}"; } 
+do1 "${1}"

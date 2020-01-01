@@ -1,0 +1,3 @@
+#!/bin/bash
+logfile=$(mktemp -t mpv-quiet-"$(date +%d.%m.%G-%T)"-XXX.log)
+nohup mpv --quiet "$@" &>"$logfile" &

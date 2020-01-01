@@ -1,6 +1,102 @@
 #!/bin/bash
+
+
+
+SD="$(cd "$(dirname "$0")" > /dev/null || exit 1; pwd)";
+cd "$SD" || exit 1
+
+# Ask for the administrator password upfront
+sudo -v
+
+# Keep-alive: update existing `sudo` time stamp until has finished
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+
+# https://unix.stackexchange.com/questions/78776/characters-encodings-supported-by-more-cat-and-less
+#alias ecat='iconv -f WINDOWS-1251 -t UTF-8'
+
+#alias build_mingw='tkgup; cd $HOME/git/PKGBUILDS/mingw && sed -i "s/sudo pacman/yay/g" ./mingw-on-arch-automator.sh; ./mingw-on-arch-automator.sh -f'
+#alias build_kernel='tkgup; cd $HOME/git/PKGBUILDS/linux54-tkg && makepkg -si'
+#alias build_all_m='build_mingw; build_all'
+
+random() {
+  shuf -i "${1}-${2}" -n "${3:-1}"
+}
+
+# Validate tar archives
+tarval() {
+  tar -tJf "$@" >/dev/null
+}
+
+checkvk() {
+  Estatus=$(proxychains -q curl --http2 -sS "https://api.vk.com/method/users.get?user_id=$1&fields=last_seen,online&v=5.8" || exit)
+  case "$(jq '.response[0].last_seen.platform' <<< "$Estatus")" in
+    1) platform="мобильная версия" ;;
+    4) platform="приложение для Android" ;;
+    7) platform="полная версия сайта" ;;
+    8) platform="VK Mobile" ;;
+    *) platform="Unknown"
+  esac
+  echo "Онлайн ли сейчас: $(jq '.response[0].online' <<< "$Estatus")"
+  echo "Последний раз в сети: $(date -d @$(jq '.response[0].last_seen.time' <<< "$Estatus"))"
+  echo "Платформа: $platform"
+}
+
+# https://github.com/chrippa/livestreamer/issues/550#issuecomment-222061982
+streamnodown() {
+  streamlink --loglevel debug --player-external-http --player-no-close --player-external-http-port "5555" --retry-streams 1 --retry-open 100 --stream-segment-attempts 20 --stream-timeout 180 --ringbuffer-size 64M --rtmp-timeout 240 "$1" "${2}"
+}
+
+alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
+# https://github.com/pi-hole/docker-pi-hole/issues/312#issuecomment-412254618
+alias internal-ip="ip -o route get to 9.9.9.9 | sed -rn 's/.*src (([0-9]{1,3}\.){3}[0-9]{1,3}).*/\1/p'"
+# https://wiki.archlinux.org/index.php/Mirrors#List_by_speed
+alias archmirrorlist='curl -s https://www.archlinux.org/mirrorlist/\?country\=UA\&country\=RU\&country\=FR\&protocol\=https\&use_mirror_status\=on | sed -e 's/^#Server/Server/' -e '/^#/d' | rankmirrors -n 10 -'
+
+
+
 while read -r char; do echo "$char"; done < test.txt
 
+# play all in mpv
+mpa() { if [[ -d "${PWD}/VIDEO_TS" ]]; then
+    mpv "${PWD}"
+  else
+    files=( $(ls -b ${PWD}/*.{mp4,mkv,webm,avi,wmv} 2>/dev/null) )
+    mpv "${PWD}"/"${1:-${files[@]}}" "$2"
+  fi
+}
+
+# Convert currencies; cconv {amount} {from} {to}
+#cconv() {
+#  curl --socks5-hostname 127.0.0.1:9250 -s "https://finance.google.com/finance/converter?a=$1&from=$2&to=$3&hl=es" | sed '/res/!d;s/<[^>]*>//g';
+#}
+
+sudo tee -a /etc/security/limits.conf >/dev/null <<END
+# wine esync
+#bausch soft nofile 1048576
+#bausch hard nofile 1048576
+END
+#sudo tee -a /etc/systemd/user.conf >/dev/null <<END
+#DefaultLimitNOFILE=1048576
+#END
+#sudo tee -a /etc/systemd/system.conf >/dev/null <<END
+#DefaultLimitNOFILE=1048576
+#END
+
+
+# xdg zsh
+#sudo tee /etc/zsh/zshenv >/dev/null <<< 'ZDOTDIR=$XDG_CONFIG_HOME/zsh'
+
+# isntall breeze-grub theme
+# https://github.com/gustawho/grub2-theme-breeze
+if [[ ! -d /boot/grub/themes ]]; then
+ sudo mkdir /boot/grub/themes
+ cd /boot/grub/themes || exit 1
+ sudo wget https://github.com/gustawho/grub2-theme-breeze/archive/master.tar.gz
+ sudo tar --strip-components=1 -xvf master.tar.gz 'grub2-theme-breeze-master/breeze'
+ sudo rm master.tar.gz
+ # fix https://github.com/gustawho/grub2-theme-breeze/issues/11#issuecomment-492493246
+ sudo sed -i -e "\$aleft = 38%\nwidth = 500\ntop = 80%\nheight = 48\ntext_color = "#f2f2f2"\nbar_style = \"progress_bar_*.png\"\nhighlight_style = \"progress_highlight_*.png\"\n}" -e '51,60d' /boot/grub/themes/breeze/theme.txt
+fi
 
 # проброс gpu
 startvm() {
@@ -74,6 +170,26 @@ alias minecraft_socks='java -Xmx1024M -Xms512M -DsocksProxyHost=127.0.0.1 -Dsock
 
 # Auto-correct last input. @TODO: This works?
 #alias fuck='$(thefuck $(fc -ln -1))'
+
+# как отформатировать то что выдаст lastexport:
+sed -i 's/^..........//'
+sed -r -i 's/[a-z0-9]+-[a-z0-9]+-[a-z0-9]+-[a-z0-9]+-[a-z0-9]+//g'
+awk '!x[$0]++'
+
+
+# https://stackoverflow.com/questions/20568515/how-to-use-sed-to-replace-a-config-files-variable
+
+sudo sed -r 's/^(xserverauthfile=).*/\1$XAUTHORITY/' $(which startx)
+
+# вот этот просто добавляет $XAUTHORITY, а не значение переменной
+sudo sed -i '/^xserverauthfile=/s/=.*/=$XAUTHORITY/' $(which startx)
+sudo sed -i '/\(^xserverauthfile=\).*/ s//\1$XAUTHORITY/' $(which startx)
+sudo sed -i 's/^\(xserverauthfile=\).*/\1$XAUTHORITY/' $(which startx)
+
+# А эти раскрывают переменную
+sudo sed -i 's,^\(xserverauthfile=\).*,\1'$XAUTHORITY',' $(which startx)
+sudo sed -i "s|xserverauthfile=$HOME/.serverauth.$$|xserverauthfile=$XAUTHORITY|g" $(which startx)
+
 
 
 tar -x < <(lzip -c -d "${DISTDIR}/${P}.tar.lz") || die
