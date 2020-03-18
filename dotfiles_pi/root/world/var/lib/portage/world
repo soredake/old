@@ -1,0 +1,9 @@
+app-admin/stow
+app-admin/sudo
+app-emulation/docker
+app-misc/tmux
+app-shells/zsh
+dev-vcs/git
+net-misc/networkmanager
+sys-apps/rng-tools
+sys-process/htop

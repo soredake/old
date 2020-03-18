@@ -1,0 +1,4 @@
+app-emulation/docker overlay -device-mapper
+net-dns/dnscrypt-proxy plugins
+net-misc/networkmanager resolvconf
+sys-apps/coreutils multicall

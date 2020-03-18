@@ -1,0 +1,6 @@
+[Unit]
+Description=Clean dollchan backups
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash %h/sync/main/Documents/dollchan/clean.sh

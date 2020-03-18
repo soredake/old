@@ -1,0 +1,10 @@
+[Unit]
+Description=monthly btfs cleanup
+
+[Timer]
+OnCalendar=monthly
+RandomizedDelaySec=12h
+Persistent=true
+
+[Install]
+WantedBy=timers.target

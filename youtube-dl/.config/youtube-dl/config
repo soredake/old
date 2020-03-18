@@ -1,0 +1,5 @@
+# vim: ft=properties
+--prefer-free-formats
+--external-downloader aria2c
+# https://wiki.archlinux.org/index.php/Youtube-dl#Faster_downloads
+--external-downloader-args "-c -j 3 -x 3 -s 3 -k 1M"

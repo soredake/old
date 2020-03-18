@@ -1,0 +1,14 @@
+[Unit]
+Description=My Apache Frontend
+After=docker.service
+Requires=docker.service
+
+[Service]
+Restart=always
+RestartSec=20s
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill rtorrent-rutorrent
+ExecStartPre=-/usr/bin/docker rm rtorrent-rutorrent
+ExecStartPre=/usr/bin/docker pull diameter/rtorrent-rutorrent:64-latest
+ExecStart=/usr/bin/docker run -dt --name rtorrent-rutorrent -p 8082:80 -p 11443:443 -p 49160:49160/udp -p 49161:49161 -v "$HOME/mdata/torrents:/downloads" diameter/rtorrent-rutorrent:64-latest
+ExecStop=/usr/bin/docker stop rtorrent-rutorrent

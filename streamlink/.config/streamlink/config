@@ -1,0 +1,7 @@
+# vim: ft=properties
+player=mpv
+hls-segment-threads=10
+twitch-disable-hosting
+default-stream=best
+verbose-player
+# how to seek video when using streamlink? use --player-passthrough hls option (see https://github.com/streamlink/streamlink/issues/709#issuecomment-287018901)

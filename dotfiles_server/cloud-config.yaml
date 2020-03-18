@@ -1,0 +1,16 @@
+#cloud-config
+
+coreos:
+  units:
+    - name: docker.service
+      drop-ins:
+        - name: 10-change-docker.conf
+          content: |
+            [Service]
+            Environment="DOCKER_OPTS=--storage-driver=overlay --storage-opt dm.use_deferred_removal=true --storage-opt dm.use_deferred_deletion=true"
+    - name: sshd.socket
+      command: restart
+      content: |
+        [Socket]
+         ListenStream=7628
+         Accept=yes

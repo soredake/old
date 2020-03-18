@@ -1,0 +1,5 @@
+# gentoo is not setting this by default
+# https://wiki.archlinux.org/index.php/XDG_Base_Directory_support
+XDG_DATA_HOME	DEFAULT=@{HOME}/.local/share
+XDG_CONFIG_HOME	DEFAULT=@{HOME}/.config
+XDG_CACHE_HOME	DEFAULT=@{HOME}/.cache
