@@ -11,6 +11,39 @@ sudo -v
 # Keep-alive: update existing `sudo` time stamp until has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
+# ukr nalogi
+# https://duckduckgo.com/?q=(400+-+165)+*+35%25&ia=calculator
+# https://rozetka.com.ua/news-articles-promotions/promotions/261738.html
+#function ukr-nalogi
+#  if [[ "$1" -ge "151" ]]; then
+    #poshlina=$(bc -l <<< "($1 - 150) * 0.10")
+#    echo Tax is: $(bc -l <<< "($1 - 100 + $poshlina) * 0.20 + $poshlina") EUR
+ # else
+#    echo Tax is: $(bc -l <<< "($1 - 100) * 0.20") EUR
+#  end
+#end
+
+# https://www.checkyourmath.com/convert/length/inches_cm.php
+function cmtoinch
+#  echo $(bc -l <<< "$1 / 2.54")
+end
+function inchtocm
+ # echo $(bc -l <<< "$1 * 2.54")
+end
+
+sl() {
+  streamlink --player-external-http --player-external-http-port 5555 "$@"
+}
+
+strurl() {
+  streamlink --stream-url "$@"
+}
+
+strurl1() {
+  streamlink --stream-url --player-passthrough hls,http,rtmp "$@"
+}
+
+
 # Currency conversions
 alias usd='cconv 1 usd uah'
 #alias yuzu='gamemoderun yuzu'

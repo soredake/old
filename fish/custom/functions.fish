@@ -1,3 +1,57 @@
+function px
+  if test (type -t $argv[1]) = function >/dev/null ^/dev/null
+    set _command (type $argv[1] | grep -o ".*\$argv" | sed 's/\$argv//g')
+     echo $argv $command
+    if test (count $argv) -ge 2
+      set args $argv[2..(count $argv)]
+       echo $argv $command
+    else
+      set args $argv[2]
+       echo $argv $command
+    end
+  else
+    set _command $argv[1]
+    set args $argv
+    echo $argv $command
+  end
+   echo $argv $command
+  proxychains $_command $args
+end
+
+function test123
+  echo initial $argv
+  if test (type -t $argv[1]) = function >/dev/null ^/dev/null
+    echo command is (type $argv[1] | grep -o ".*\$argv" | sed 's/\$argv//g')
+    set _command (type $argv[1] | grep -o ".*\$argv" | sed 's/\$argv//g')
+    if test (count $argv) -ge 2
+      echo $_command $argv[2..(count $argv)]
+    else
+      echo $_command $argv[2]
+    end
+  else
+    echo command is $argv[1]
+    echo $argv
+  end
+  #echo "command+2-999" $_command $argv[2..(count $argv)]
+  #echo "the command" $_command
+  #echo "args" $argv
+  #echo "args 2-999" $argv[2..(count $argv)]
+end
+
+function test33333
+  echo $argv[2..(count $argv)]
+end
+
+function testf
+  echo $argv[1]
+  if test (type -t $argv[1]) = function >/dev/null ^/dev/null
+    echo "func or alias"
+  else
+    echo "just command"
+  end
+  #echo $_command $argv[2..(count $argv)]
+end
+
 # play all in mpv
 function mpa
   if test -d "${PWD}/VIDEO_TS" || test -d "${PWD}/BDMV"; then
