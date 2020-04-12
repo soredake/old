@@ -1,8 +1,0 @@
-[Unit]
-Description=clean tab sessions files
-
-[Service]
-Type=oneshot
-
-# NOTE: Do not use environment variables here. If they are empty, it can mess things up royally.
-ExecStart=/usr/bin/bash "%h/bin/clean_tab_sessions.sh"

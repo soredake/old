@@ -23,6 +23,15 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 #  end
 #end
 
+#alias build_all 'build_faudio && build_staging'
+#alias build_faudio 'tkgup; cd faudio-git && makepkg -si' # https://github.com/Tk-Glitch/PKGBUILDS/issues/458#issuecomment-575811620 and https://git.archlinux.org/svntogit/community.git/tree/trunk/PKGBUILD?h=packages/lib32-faudio#n30
+# https://wiki.archlinux.org/index.php/Kexec
+alias kernelup 'sudo kexec -l /boot/vmlinuz-linux-tkg-pds-zen --initrd=/boot/initramfs-linux-tkg-pds-zen.img --reuse-cmdline && systemctl kexec'
+#alias build_proton 'tkgup; cd wine-tkg-git/proton-tkg && ./proton-tkg.sh'
+#alias build_wine 'tkgup; cd wine-tkg-git/wine-tkg-git && makepkg -si'
+#alias mountandroidfs 'sshfs -o kernel_cache android:/ /media/android'
+
+
 # https://www.checkyourmath.com/convert/length/inches_cm.php
 function cmtoinch
 #  echo $(bc -l <<< "$1 / 2.54")

@@ -1,8 +1,0 @@
-[Unit]
-Description=clean btfs files
-
-[Service]
-Type=oneshot
-
-# NOTE: Do not use environment variables here. If they are empty, it can mess things up royally.
-ExecStart=/usr/bin/find "%h/btfs" -ctime +30 -mindepth 1 -print -delete

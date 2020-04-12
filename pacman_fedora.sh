@@ -236,23 +236,16 @@ notinfedora=(
   flips
   samrewritten-git
   ninfs-gui
-  https://github.com/FNA-XNA/FAudio/pull/161
+  faudio (with wma)
   mpv-mpris mpv-webm-git
-  trebleshot
-  grub-theme-vimix
   citra-canary-git # flatpak or https://build.opensuse.org/project/show/home:KAMiKAZOW:Emulators
   vitetris # RPM Sphere x86_64
-  tutanota-desktop-bin # appimage
-  disable-c6-systemd
   safeeyes
   rpcs3-git # appimage
   roberta
-  oversteer
-  yuxu # https://build.opensuse.org/project/show/home:KAMiKAZOW:Emulators
-  decaf-emu-git # https://build.opensuse.org/project/show/home:KAMiKAZOW:Emulators
+  yuzu
   cdemu-client vhba-module-dkms # https://copr.fedorainfracloud.org/coprs/rok/cdemu/
   kde-cdemu-manager-kf5
-  dust
 )
 
 fonts=(
