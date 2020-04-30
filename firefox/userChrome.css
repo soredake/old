@@ -1,0 +1,19 @@
+/* https://github.com/piroor/treestyletab/wiki/Code-snippets-for-custom-style-rules 
+https://bugzilla.mozilla.org/show_bug.cgi?id=1408077 */
+/* For only Tree Style Tab sidebar #1397 */
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar-header {
+  display: none;
+}
+/* https://bugzilla.mozilla.org/show_bug.cgi?id=1332447
+https://bugzilla.mozilla.org/show_bug.cgi?id=1410548
+https://bugzilla.mozilla.org/show_bug.cgi?id=1333837
+https://bugzilla.mozilla.org/show_bug.cgi?id=1339561
+https://bugzilla.mozilla.org/show_bug.cgi?id=1410548 */
+/* Hide horizontal tabs at the top of the window #1349 */
+#main-window[tabsintitlebar="true"]:not([extradragspace="true"]) #TabsToolbar > .toolbar-items {
+  opacity: 0;
+  pointer-events: none;
+}
+#main-window:not([tabsintitlebar="true"]) #TabsToolbar {
+    visibility: collapse !important;
+}

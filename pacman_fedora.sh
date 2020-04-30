@@ -233,19 +233,20 @@ packages=(
 
 # https://rpmfusion.org/Wishlist
 notinfedora=(
-  flips
-  samrewritten-git
-  ninfs-gui
-  faudio (with wma)
+  flips # https://aur.archlinux.org/packages/flips-git
+  samrewritten-git # https://github.com/PaulCombal/SamRewritten/releases
+  ninfs
+  faudio (with wma) # https://src.fedoraproject.org/rpms/FAudio/blob/master/f/FAudio.spec https://github.com/FNA-XNA/FAudio/pull/161
   mpv-mpris mpv-webm-git
   citra-canary-git # flatpak or https://build.opensuse.org/project/show/home:KAMiKAZOW:Emulators
-  vitetris # RPM Sphere x86_64
-  safeeyes
+  vitetris # https://rpmsphere.github.io/
+  safeeyes # https://rpmsphere.github.io/
   rpcs3-git # appimage
-  roberta
-  yuzu
+  roberta/luxtorpedia # wget & tar?
+  ripme
+  yuzu # https://github.com/yuzu-emu/yuzu/issues/1549 or direct tarball release
   cdemu-client vhba-module-dkms # https://copr.fedorainfracloud.org/coprs/rok/cdemu/
-  kde-cdemu-manager-kf5
+  kde-cdemu-manager-kf5 # gcdemu?
 )
 
 fonts=(

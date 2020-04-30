@@ -11,6 +11,40 @@ sudo -v
 # Keep-alive: update existing `sudo` time stamp until has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
+
+
+# 5gb max, stores for 24 hours
+function cockfile
+  curl --progress-bar -F file=@$argv https://cockfile.com/api.php?d=upload-tool
+end
+
+function j
+switch $argv
+  case d
+    cd $HOME/main/Documents
+  case g 
+    cd $HOME/git
+  case m
+    cd /media
+  case s
+    cd $HOME/main
+  case t
+    cd /media/disk0/torrents
+  case '*'
+    echo "No folder defined for this alias."
+end
+end
+
+# 512mb max, stores for 30+ days
+function 0x0
+  if string match --regex "http?[s]://.*" $argv[1]
+    set prefix "url="
+  else
+    set prefix "file=@"
+  end
+  curl -F$prefix$argv https://0x0.st
+end
+
 # ukr nalogi
 # https://duckduckgo.com/?q=(400+-+165)+*+35%25&ia=calculator
 # https://rozetka.com.ua/news-articles-promotions/promotions/261738.html
