@@ -233,6 +233,8 @@ packages=(
 
 # https://rpmfusion.org/Wishlist
 notinfedora=(
+  taisei # https://flathub.org/apps/details/org.taisei_project.Taisei
+  syobon # https://snapcraft.io/open-syobon-action
   flips # https://aur.archlinux.org/packages/flips-git
   samrewritten-git # https://github.com/PaulCombal/SamRewritten/releases
   ninfs
@@ -243,7 +245,7 @@ notinfedora=(
   safeeyes # https://rpmsphere.github.io/
   rpcs3-git # appimage
   roberta/luxtorpedia # wget & tar?
-  ripme
+  ripme # https://github.com/RipMeApp/ripme/issues/1641
   yuzu # https://github.com/yuzu-emu/yuzu/issues/1549 or direct tarball release
   cdemu-client vhba-module-dkms # https://copr.fedorainfracloud.org/coprs/rok/cdemu/
   kde-cdemu-manager-kf5 # gcdemu?
