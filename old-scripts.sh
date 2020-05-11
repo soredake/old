@@ -18,6 +18,14 @@ function cockfile
   curl --progress-bar -F file=@$argv https://cockfile.com/api.php?d=upload-tool
 end
 
+  if string match -q m $argv
+    ancient-packages -q
+    #fd -t d -H ".unwanted" /media/disk0/torrents -x rm -r {}
+    return
+  end
+  #fd -t f -H -I -e .tar.zst --search-path $HOME/git/PKGBUILDS -x "rm" {}
+
+
 function j
 switch $argv
   case d
