@@ -18,6 +18,25 @@ sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 
+  #sudo apt update
+  #sudo apt upgrad
+  #flatpak --user update --noninteractive
+  #snap refresh
+  #fwupdmgr refresh
+  #fwupdmgr update
+
+
+function mkd
+  mkdir -p $argv && cd $argv || exit 1;
+end
+
+# Convert currencies; cconv {amount} {from} {to}
+function cconv
+  #| grep '&#8372;</strong>'
+  set result (curl -s "https://exchangerate.guru/$argv[2]/$argv[3]/$argv[1]/" | grep --color=never -o -P '(?<=<input data-role="secondary-input" type="text" class="form-control" value=").*(?=" required>)')
+  echo "$argv[1] $argv[2] = $result $argv[3]"
+end
+
 
 # 5gb max, stores for 24 hours
 function cockfile
