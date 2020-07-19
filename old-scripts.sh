@@ -26,6 +26,25 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   #fwupdmgr update
 
 
+
+#alias finddupes 'jdupes -R -Nd1Ap'
+
+# fix wine
+#sudo apt-get install winehq-staging=5.7~focal wine-staging=5.7~focal wine-staging-amd64=5.7~focal wine-staging-i386=5.7~focal -V
+
+# one more automation TODO: https://bugs.launchpad.net/ubuntu/+source/software-properties/+bug/1882500 https://bugs.kde.org/show_bug.cgi?id=418577
+#sudo sed -i 's|//Unattended-Upgrade::Remove-Unused-Dependencies.*|Unattended-Upgrade::Remove-Unused-Dependencies "true";|g' /etc/apt/apt.conf.d/50unattended-upgrades
+
+# TODO: https://github.com/lutris/lutris/issues/2924
+# TODO: https://gitlab.gnome.org/GNOME/gimp/-/issues/1830
+# sync kde5 places to gtk3 bookmarks
+# https://askubuntu.com/questions/694283/how-do-i-sync-kde-5-places-folder-bookmarks-to-gtk-3
+function syncgtkbmarks
+  awk -F\" '/<bookmark href=\"file/ {print $2}' < "$HOME/.local/share/user-places.xbel" > "$HOME/.config/gtk-3.0/bookmarks"
+  # replace space with %20 to fix bookmarks
+  sed -i "s/ /%20/g" "$HOME/.config/gtk-3.0/bookmarks"
+end
+
 function mkd
   mkdir -p $argv && cd $argv || exit 1;
 end

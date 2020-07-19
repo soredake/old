@@ -1,0 +1,8 @@
+[Unit]
+Description=Update fisher and plugins
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/fish -c "fisher self-update && fisher"
