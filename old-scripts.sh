@@ -224,6 +224,29 @@ fastdelete() {
   eval "${s}" rmdir "$1" "$_tmp"
 }
 
+function backup
+  #echo "===Moving phone stuff from cloud to disk==="
+  #rclone move gdrive:/phone-stuff/ $HOME/main/unsorted
+  #echo "===Cloud backup==="
+  #parallel -j 2 rclone sync $HOME/main ::: {gdrive,50gbmega}:/main
+  #rclone sync $HOME/main gdrive:/main
+end
+
+# TODO: https://github.com/rclone/rclone/issues/3980
+wget --content-disposition https://downloads.rclone.org/v1.53.1/rclone-v1.53.1-linux-amd64.deb
+sudo apt install -y ./rclone*.deb
+
+#alias jc 'journalctl'
+#alias jcu 'journalctl --user'
+
+function backup
+  #test ! -d /media/danet/Data/main && sleep 120
+  #echo "===Local backup==="
+  #cps $HOME/main /media/danet/Data
+  #rclone cleanup gdrive:/
+end
+
+
 # https://wiki.archlinux.org/index.php/Limits.conf
 # https://wiki.archlinux.org/index.php/Core_dump
 sudo tee -a /etc/security/limits.conf >/dev/null <<END
