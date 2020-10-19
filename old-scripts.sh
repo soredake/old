@@ -238,6 +238,13 @@ sudo apt install -y ./rclone*.deb
 
 #alias jc 'journalctl'
 #alias jcu 'journalctl --user'
+alias sc 'systemctl'
+alias scu 'systemctl --user'
+
+
+# gb studio
+wget --content-disposition 'https://circleci.com/api/v1.1/project/github/chrismaltby/gb-studio/latest/artifacts/0/builds/gb-studio-v2beta-linux_x86_64.deb?branch=v2beta&filter=successful' -O gb.deb
+sudo apt install -y ./gb.deb
 
 function backup
   #test ! -d /media/danet/Data/main && sleep 120
@@ -245,6 +252,8 @@ function backup
   #cps $HOME/main /media/danet/Data
   #rclone cleanup gdrive:/
 end
+
+
 
 
 # https://wiki.archlinux.org/index.php/Limits.conf
