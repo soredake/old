@@ -17,6 +17,9 @@ sudo -v
 # Keep-alive: update existing `sudo` time stamp until has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
+# vmware https://www.namhuy.net/227/enable-3d-hardware-graphics-acceleration-for-vmware-workstation-on-ubuntu
+echo 'mks.gl.allowBlacklistedDrivers = "TRUE"' >> "$HOME/.vmware/preferences"
+
 
   #sudo apt update
   #sudo apt upgrad
@@ -26,6 +29,9 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   #fwupdmgr update
 
 
+
+#alias cps 'rsync --archive --compress --progress --verbose --executability -h --update --delete'
+#alias tlg2 'telegram-desktop -many -workdir $HOME/.local/share/TelegramDesktop2'
 
 #alias finddupes 'jdupes -R -Nd1Ap'
 
