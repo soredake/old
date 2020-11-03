@@ -20,6 +20,25 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 # vmware https://www.namhuy.net/227/enable-3d-hardware-graphics-acceleration-for-vmware-workstation-on-ubuntu
 echo 'mks.gl.allowBlacklistedDrivers = "TRUE"' >> "$HOME/.vmware/preferences"
 
+# firefox audio speaker
+speech-dispatcher espeak-ng festival
+
+#[very-big-cache]
+#demuxer-readahead-secs=6000
+
+# https://www.reddit.com/r/mpv/comments/ecrhwi/reduce_playlist_font_size/fbdfp64
+#osd-font-size=21
+
+#h apply-profile "very-big-cache"; show-text "very-big-cache";
+
+
+# https://bugs.kde.org/show_bug.cgi?id=428094
+#mkdir "$HOME/.config/autostart"
+#sed -e '$aHidden=True' /etc/xdg/autostart/org.kde.discover.notifier.desktop > "$HOME/.config/autostart/org.kde.discover.notifier.desktop"
+
+# https://bugs.kde.org/show_bug.cgi?id=413053#c12
+#/usr/lib/x86_64-linux-gnu/libexec/DiscoverNotifier --hide
+
 
   #sudo apt update
   #sudo apt upgrad
