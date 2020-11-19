@@ -20,6 +20,18 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 # vmware https://www.namhuy.net/227/enable-3d-hardware-graphics-acceleration-for-vmware-workstation-on-ubuntu
 echo 'mks.gl.allowBlacklistedDrivers = "TRUE"' >> "$HOME/.vmware/preferences"
 
+# dupeguru https://github.com/arsenetar/dupeguru/issues/484
+git clone --depth=1 https://github.com/arsenetar/dupeguru /tmp/dupeguru
+cd /tmp/dupeguru || exit 1
+bash -c "python3 -m venv --system-site-packages env && source env/bin/activate && pip install -r requirements.txt && python3 build.py --clean && python3 package.py"
+cd build || exit 1
+sudo apt install ./dupeguru*.deb
+
+# snaps https://snapcraft.io/docs/keeping-snaps-up-to-date
+# https://bugs.launchpad.net/snappy/+bug/1887217
+sudo snap set system refresh.retain=2
+sudo snap set system refresh.timer=fri,9:00~21:00
+
 # firefox audio speaker
 speech-dispatcher espeak-ng festival
 
