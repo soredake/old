@@ -7,6 +7,33 @@
 #alias badlinks 'find . -type l -exec test ! -e {} \; -print'
 
 
+#systemctl --user enable --now syncthing
+#chsh -s /usr/bin/fish
+#systemctl enable --now amdgpu
+
+alias speak2 "wget -U firefox -qO - 'https://translate.google.com/translate_tts?tl=ru-RU&client=tw-ob&q=%D0%BD%D0%B5%D1%82%20%D0%BD%D0%B5%20%D0%B7%D0%BD%D0%B0%D1%8E' | xclip -selection clipboard"
+
+# esc is broken
+#xmodmap ~/.Xmodmap
+
+
+#alias synctomega 'rclone sync -P --exclude .overgrive\* $HOME/main 50gbmega:/main'
+
+function speak
+  trans -speak -s ru $argv -download-audio-as $XDG_RUNTIME_DIR/trans-speak.mp3
+  #ffmpeg -y -i $XDG_RUNTIME_DIR/trans-speak.ts $XDG_RUNTIME_DIR/trans-speak.ogg # do i need this?
+  echo $XDG_RUNTIME_DIR/trans-speak.ogg | xclip -i -selection clipboard
+end
+
+
+  #if not functions -q fisher
+  #  curl https://git.io/fisher --create-dirs -sLo $__fish_config_dir/functions/fisher.fish
+  #  fish -c fisher
+  #end
+  #bass source /etc/profile
+  #bass source $HOME/.profile
+#set -gx PATH $PATH $HOME/.local/share/npm/bin
+
 
 SD="$(cd "$(dirname "$0")" > /dev/null || exit 1; pwd)";
 cd "$SD" || exit 1
@@ -105,6 +132,30 @@ end
     return
   end
   #fd -t f -H -I -e .tar.zst --search-path $HOME/git/PKGBUILDS -x "rm" {}
+
+# avoid problems like this https://github.com/flathub/com.mojang.Minecraft/issues/6
+# https://bugs.kde.org/show_bug.cgi?id=430801
+# https://bugs.kde.org/show_bug.cgi?id=422339
+#sudo update-locale --reset
+
+
+# https://unix.stackexchange.com/questions/421066/popup-language-support-is-incomplete-what-packages-does-it-want-to-install
+# script wrongly assumes that ru_UA is uk, or it looks into wrong locale env https://bugs.kde.org/show_bug.cgi?id=430801, https://bugs.launchpad.net/ubuntu/+source/language-selector/+bug/1910692
+# https://bugs.kde.org/show_bug.cgi?id=431292
+# shellcheck disable=SC2046
+#sudo apt install --install-suggests --ignore-missing $(check-language-support -l ru_UA)
+
+
+# https://bugzilla.mozilla.org/show_bug.cgi?id=788319
+#set -gx MOZ_X11_EGL 1
+
+# https://gitlab.com/freedesktop-sdk/freedesktop-sdk/-/issues/1133
+function freetypecleartype
+  fd -t f -H -I "libfreetype.so*" --search-path /var/lib/flatpak -x sudo cp -fv (realpath /usr/lib/x86_64-linux-gnu/libfreetype.so.6) {}
+  # fix `/app/extra/viber/Viber: error while loading shared libraries: libbrotlidec.so.1: cannot open shared object file: No such file or directory`
+  # will be fixed by https://github.com/flathub/com.viber.Viber/pull/27
+  #sudo cp -v /var/lib/flatpak/runtime/org.kde.Platform/x86_64/5.15/active/files/lib/x86_64-linux-gnu/libbrotli* /var/lib/flatpak/runtime/org.freedesktop.Platform/x86_64/19.08/active/files/lib/x86_64-linux-gnu
+end
 
 
 function j
