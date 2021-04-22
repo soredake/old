@@ -1,0 +1,14 @@
+# https://wiki.archlinux.org/index.php/hdparm#Putting_a_drive_to_sleep_directly_after_boot
+[Unit]
+Description=hdparm sleep
+# sddm wakes disks, so start after it
+After=sddm.service
+After=udisks2.service
+
+[Service]
+Type=oneshot
+ExecStartPost=/bin/sleep 7
+ExecStart=/usr/sbin/hdparm -q -S 120 -y /dev/disk/by-id/ata-TOSHIBA_DT01ACA100_56TS61WFS
+
+[Install]
+WantedBy=multi-user.target
