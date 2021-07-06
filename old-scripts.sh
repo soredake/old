@@ -1,6 +1,35 @@
 #!/bin/bash
 
 
+# https://microsoft.github.io/Git-Credential-Manager-for-Windows/Docs/Askpass.html
+# https://github.com/git-for-windows/git/issues/1613
+# https://github.com/git-lfs/git-lfs/issues/1843
+# https://github.com/git-for-windows/git/issues/1683
+# https://github.com/PowerShell/Win32-OpenSSH/issues/1234#issuecomment-824709477
+# https://github.com/desktop/desktop/issues/11918
+# https://github.com/desktop/desktop/issues/5641
+#setx GIT_ASKPASS "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\git-gui--askpass"
+#setx SSH_ASKPASS "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\git-gui--askpass"
+#setx DISPLAY "required"
+
+
+# disable fast boot
+#REG ADD "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Power" /V HiberbootEnabled /T REG_dWORD /D 0 /F
+
+# fix https://github.com/microsoft/WSL/issues/4103
+# replace with compact? `compact /?`
+#Install-Module -Force -Name Carbon
+#Import-Module 'Carbon'
+#mkdir "$env:USERPROFILE\AppData\Local\Packages\CanonicalGroupLimited.Ubuntu20.04onWindows_79rhkp1fndgsc\LocalState"
+#Disable-CNtfsCompression -Path "$env:USERPROFILE\AppData\Local\Packages\CanonicalGroupLimited.Ubuntu20.04onWindows_79rhkp1fndgsc\LocalState"
+
+# fix https://github.com/microsoft/WSL/issues/5336#issuecomment-770494713
+#Disable-CNtfsCompression -Path "$env:TEMP"
+#compact /C "$env:TEMP"
+#New-Item -Path "$env:TEMP/swap.vhdx" -ItemType File
+#compact /U "$env:TEMP/swap.vhdx"
+
+
 #alias build_mainline 'tkgup; cd wine-tkg-git/wine-tkg-git && timeout 2 ./non-makepkg-build.sh $HOME/.config/frogminer/wine-tkg-mainline.cfg; ./non-makepkg-build.sh $HOME/.config/frogminer/wine-tkg-mainline.cfg'
 #alias build_staging 'tkgup; cd wine-tkg-git/wine-tkg-git && timeout 2 ./non-makepkg-build.sh $HOME/.config/frogminer/wine-tkg-staging.cfg; ./non-makepkg-build.sh $HOME/.config/frogminer/wine-tkg-staging.cfg'
 #alias tkgup 'cd $HOME/git/PKGBUILDS; git reset --hard origin/frogging-family; git submodule foreach --recursive git reset --hard origin; git pull'
