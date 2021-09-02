@@ -1,6 +1,14 @@
 #!/bin/bash
 
 
+# https://www.computerhope.com/issues/ch001762.htm
+powercfg -h off
+
+# https://www.tutorialspoint.com/how-to-remove-pagefile-on-the-specific-drive-using-powershell
+$pagefileset = Gwmi win32_pagefilesetting | where{$_.caption -like 'C:*'}
+$pagefileset.Delete()
+
+
 # https://microsoft.github.io/Git-Credential-Manager-for-Windows/Docs/Askpass.html
 # https://github.com/git-for-windows/git/issues/1613
 # https://github.com/git-lfs/git-lfs/issues/1843
@@ -778,3 +786,15 @@ new_float pixel 1
 #hide_edge_borders both
 
 focus_follows_mouse yes
+
+# mpv.net config
+#Add-Content -Path "$env:APPDATA\mpv.net\mpv.conf" -Value "`nno-keepaspect-window"
+
+# https://stackoverflow.com/questions/30496116/how-to-disable-hyper-v-in-command-line
+bcdedit /set hypervisorlaunchtype off
+
+# fix https://github.com/microsoft/WSL/issues/4103
+compact /U "$env:USERPROFILE\AppData\Local\Packages\CanonicalGroupLimited.Ubuntu20.04onWindows_79rhkp1fndgsc\LocalState"
+
+# fix https://github.com/microsoft/WSL/issues/5336#issuecomment-770494713
+Set-Content -Path "$env:USERPROFILE\.wslconfig" -Value "[wsl2]`nswap=0"

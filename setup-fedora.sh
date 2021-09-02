@@ -3,7 +3,6 @@
 #sudo dnf copr enable dawid/better_fonts -y
 sudo dnf copr enable zawertun/hack-fonts -y
 # Install my packages
-# https://pagure.io/fedora-kde/SIG/issue/52
 # preinstall plasma-disks https://pagure.io/fedora-kde/SIG
 # https://bugzilla.redhat.com/show_bug.cgi?id=1821621 https://src.fedoraproject.org/rpms/dnf/pull-request/19
 # https://pagure.io/fedora-workstation/issue/217
@@ -26,7 +25,7 @@ sudo snap install code --classic
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 sudo flatpak install -y flathub org.jdownloader.JDownloader com.viber.Viber com.github.ztefn.haguichi com.spotify.Client com.discordapp.Discord com.github.micahflee.torbrowser-launcher com.mojang.Minecraft net.rpcs3.RPCS3 org.telegram.desktop org.freefilesync.FreeFileSync
 sudo flatpak override --filesystem=xdg-config/fontconfig:ro # https://github.com/flatpak/flatpak/issues/3947
-sudo flatpak override org.telegram.desktop --filesystem=host # https://github.com/flathub/org.telegram.desktop/issues/23
+#sudo flatpak override org.telegram.desktop --filesystem=host # https://github.com/flathub/org.telegram.desktop/issues/23
 sudo flatpak override org.jdownloader.JDownloader --filesystem=host
 pip install -U git+https://github.com/simons-public/protonfixes protontricks internetarchive safeeyes
 fish -c 'curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher pure-fish/pure'
