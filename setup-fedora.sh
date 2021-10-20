@@ -6,7 +6,7 @@ sudo dnf copr enable zawertun/hack-fonts -y
 # https://pagure.io/fedora-kde/SIG/issue/53 fontconfig-font-replacements fontconfig-enhanced-defaults
 # preinstall python3-dnf-plugin-system-upgrade https://pagure.io/fedora-kde/SIG/issue/3 https://bugzilla.redhat.com/show_bug.cgi?id=1821621 https://src.fedoraproject.org/rpms/dnf/pull-request/19 https://pagure.io/fedora-workstation/issue/217
 # icoutils(needed for exe preview) as dep for wine or dolphin
-sudo dnf install -y https://github.com/rpmsphere/noarch/raw/master/r/rpmsphere-release-$(rpm -E %fedora)-1.noarch.rpm https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm https://github.com/rpmsphere/noarch/raw/master/r/rpmsphere-release-$(rpm -E %fedora)-1.noarch.rpm
+sudo dnf install -y https://github.com/rpmsphere/noarch/raw/master/r/rpmsphere-release-$(rpm -E %fedora)-1.noarch.rpm https://mirrors.rpmfusion.org/{free/fedora/rpmfusion-,nonfree/fedora/rpmfusion-non}free-release-$(rpm -E %fedora).noarch.rpm
 packages=(https://www.vpn.net/installers/logmein-hamachi-2.1.0.203-1.x86_64.rpm https://www.thefanclub.co.za/sites/default/files/public/overgrive/overgrive-3.3.9.noarch.rpm https://github.com/TheAssassin/AppImageLauncher/releases/download/v2.2.0/appimagelauncher-2.2.0-travis995.0f91801.x86_64.rpm python3-dnf-plugin-system-upgrade android-tools aria2 bleachbit chntpw fish gimp lm_sensors hack-fonts lutris mpv plasma-discover-snap qdirstat rclone-browser retroarch seahorse steam stow vitetris wine-dev trash-cli)
 packages+=(libappindicator-gtk3 python3-psutil cairo-devel python3-devel gobject-introspection-devel cairo-gobject-devel) # safeeyes https://github.com/slgobinath/SafeEyes/issues/432
 sudo dnf install -y ${packages[@]}
@@ -25,7 +25,7 @@ sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub
 sudo flatpak install -y flathub org.jdownloader.JDownloader com.viber.Viber com.github.ztefn.haguichi com.spotify.Client com.discordapp.Discord com.github.micahflee.torbrowser-launcher com.mojang.Minecraft net.rpcs3.RPCS3 org.telegram.desktop org.freefilesync.FreeFileSync
 sudo flatpak override --filesystem=xdg-config/fontconfig:ro # https://github.com/flatpak/flatpak/issues/3947
 #sudo flatpak override org.telegram.desktop --filesystem=host # https://github.com/flathub/org.telegram.desktop/issues/23
-sudo flatpak override org.jdownloader.JDownloader --filesystem=host # TODO: send pr to flathbu
+sudo flatpak override org.jdownloader.JDownloader --filesystem=host # TODO: send pr to flathub
 pip install -U git+https://github.com/simons-public/protonfixes protontricks internetarchive safeeyes
 fish -c 'curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher pure-fish/pure'
 #aria2c -c -d "$HOME/.config/mpv/scripts" https://github.com/ekisu/mpv-webm/releases/download/latest/webm.lua
