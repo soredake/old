@@ -850,6 +850,27 @@ C:\tools\msys64\mingw64.exe bash.exe -c 'ln -Pfv /c/Users/User/git/dotfiles_wind
 #mkdir "$env:APPDATA\mpv"
 #mkdir "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState"
 
+# fix https://github.com/msys2/MSYS2-packages/issues/138#issuecomment-775316680
+#C:\tools\msys64\mingw64.exe bash.exe -c 'mkpasswd > /etc/passwd; mkgroup > /etc/group; sed -i "s/db//g" /etc/nsswitch.conf'
+
+# git for windows uses wrong ssh binary which leads to errors like `Permission Denied (publickey)` because it don't use windows ssh-agent
+# https://github.com/PowerShell/Win32-OpenSSH/wiki/Setting-up-a-Git-server-on-Windows-using-Git-for-Windows-and-Win32_OpenSSH#on-client
+# https://github.com/PowerShell/Win32-OpenSSH/issues/1136#issuecomment-382074202
+#setx GIT_SSH_COMMAND "C:\\Windows\\System32\\OpenSSH\\ssh.exe -T"
+
+
+# https://answers.microsoft.com/en-us/windows/forum/all/opening-a-folder-adds-shortcut-under-this-pc-in/8c0de37a-e517-457d-8ce6-b39ce9e5c04e
+# https://www.tenforums.com/customization/96893-updating-reg-file-removing-folder-pc.html
+Set-ItemProperty -Path HKLM:\"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}\PropertyBag" -Name "ThisPCPolicy" -Value Hide # Desktop
+Set-ItemProperty -Path HKLM:\"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{f42ee2d3-909f-4907-8871-4c22fc0bf756}\PropertyBag" -Name "ThisPCPolicy" -Value Hide # Documents
+Set-ItemProperty -Path HKLM:\"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{7d83ee9b-2244-4e70-b1f5-5393042af1e4}\PropertyBag" -Name "ThisPCPolicy" -Value Hide # Downloads
+Set-ItemProperty -Path HKLM:\"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{35286a68-3c57-41a1-bbb1-0eae73d76c95}\PropertyBag" -Name "ThisPCPolicy" -Value Hide # Movies
+Set-ItemProperty -Path HKLM:\"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{a0c69a99-21c8-4671-8703-7934162fcf1d}\PropertyBag" -Name "ThisPCPolicy" -Value Hide # Music
+Set-ItemProperty -Path HKLM:\"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{0ddd015d-b06c-45d5-8c4c-f59713854639}\PropertyBag" -Name "ThisPCPolicy" -Value Hide # Pictures
+
+# https://winaero.com/hide-removable-drives-navigation-pane-windows-10/
+reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\DelegateFolders\{F5FB2C77-0E2F-4A16-A381-3E560C68BC83}" /f
+
 
 # fix https://github.com/microsoft/WSL/issues/5336#issuecomment-770494713
 Set-Content -Path "$env:USERPROFILE\.wslconfig" -Value "[wsl2]`nswap=0"
