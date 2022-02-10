@@ -830,12 +830,23 @@ New-Item -ItemType SymbolicLink -Path "$env:LOCALAPPDATA\Packages\Microsoft.Wind
 
 C:\tools\msys64\mingw64.exe bash.exe -c 'ln -Pfv /c/Users/User/git/dotfiles_windows/dotfiles/.gitconfig $HOME'
 
+
+
+# https://richardballard.co.uk/ssh-keys-on-windows-10/
+#Get-Service ssh-agent | Set-Service -StartupType Automatic -PassThru | Start-Service
+
 # https://remontka.pro/compact-os-windows-10/
 #compact /compactos:never
 
 # hide user folders in "this pc"
 #Invoke-WebRequest -Uri "https://git.io/JMGtW" -OutFile "$env:TEMP/temp.reg"
 #reg import "$env:TEMP/temp.reg"
+
+#reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" /v DoHPolicy /t REG_DWORD /d "3" /f
+
+#echo vitetris --connect (exip):27015 && 
+#alias nvmestats 'sudo smartctl -A /dev/nvme0'
+#alias exip 'curl -s https://ipecho.net/plain'
 
 # add python to path
 # TODO: better to install python with winget once https://github.com/microsoft/winget-cli/issues/219 and https://github.com/microsoft/winget-cli/issues/212 is resolved
@@ -845,6 +856,11 @@ C:\tools\msys64\mingw64.exe bash.exe -c 'ln -Pfv /c/Users/User/git/dotfiles_wind
 
 #Remove-Item -Path "$env:APPDATA\mpv\*.conf"
 #Remove-Item -Path "C:\tools\msys64\home\user\.zshrc"
+
+# swap
+wmic computersystem set AutomaticManagedPagefile=False
+wmic pagefileset set InitialSize=4096,MaximumSize=4096
+
 
 # TODO: is mkdir needed with dploy?
 #mkdir "$env:APPDATA\mpv"
@@ -871,6 +887,24 @@ Set-ItemProperty -Path HKLM:\"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\Curr
 # https://winaero.com/hide-removable-drives-navigation-pane-windows-10/
 reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\DelegateFolders\{F5FB2C77-0E2F-4A16-A381-3E560C68BC83}" /f
 
+# trakt tv sync
+# TODO: delete this
+python -m pip install pipx
+pipx ensurepath
+#$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") # https://stackoverflow.com/questions/17794507/powershell-reload-the-path-in-powershell
+pipx install trakt-scrobbler
+trakts auth
+trakts config set players.monitored mpv
+trakts config set fileinfo.whitelist B:\ # TODO: add dynamic disk letter detection
+trakts config set general.enable_notifs False
+"input-ipc-server=\\.\pipe\mpvsocket`n" + (Get-Content "$env:APPDATA\mpv.net\mpv.conf" -Raw) | Set-Content "$env:APPDATA\mpv.net\mpv.conf"
+trakts config set players.mpv.ipc_path \\.\pipe\mpvsocket
 
 # fix https://github.com/microsoft/WSL/issues/5336#issuecomment-770494713
 Set-Content -Path "$env:USERPROFILE\.wslconfig" -Value "[wsl2]`nswap=0"
+
+
+bash.exe -c 'sudo apt update && sudo add-apt-repository -y ppa:fish-shell/release-3 && sudo apt upgrade -y && sudo apt install -y python3-pip pipx fish && pip install --user internetarchive && pipx install tubeup && fish -c \"curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher pure-fish/pure\" && chsh -s /usr/bin/fish && wget -O $HOME/.config/fish/config.fish https://github.com/soredake/dotfiles_home/raw/kubuntu/home/fish/.config/fish/config.fish && echo \"fish_add_path \$HOME/.local/bin\" >> ~/.config/fish/config.fish'
+ln -sfv ~/.config/internetarchive/ia.ini ~/.config/ia.ini
+mkdir ~/.ia
+ln -sfv ~/.config/internetarchive/ia.ini ~/.ia/ia.ini
