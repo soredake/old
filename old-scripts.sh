@@ -801,6 +801,10 @@ bcdedit /set hypervisorlaunchtype off
 compact /U "$env:USERPROFILE\AppData\Local\Packages\CanonicalGroupLimited.Ubuntu20.04onWindows_79rhkp1fndgsc\LocalState"
 
 
+# setup mpv.net
+"ytdl-raw-options=mark-watched=,cookies-from-browser=firefox,write-auto-subs=,`nytdl-format=bestvideo[vcodec^=avc1]+bestaudio[ext=m4a]`nsub-pos=90`n" + (Get-Content "$env:APPDATA\mpv.net\mpv.conf" -Raw) | Set-Content "$env:APPDATA\mpv.net\mpv.conf"
+
+
 # config files, git
 Remove-Item -Path "$env:USERPROFILE\.gitconfig"
 New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.gitconfig" -Target ".\.gitconfig"
@@ -887,8 +891,10 @@ Set-ItemProperty -Path HKLM:\"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\Curr
 # https://winaero.com/hide-removable-drives-navigation-pane-windows-10/
 reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\DelegateFolders\{F5FB2C77-0E2F-4A16-A381-3E560C68BC83}" /f
 
+# unneeded
+#Set-Service -Name "ClickToRunSvc" -Status stopped -StartupType disabled
+
 # trakt tv sync
-# TODO: delete this
 python -m pip install pipx
 pipx ensurepath
 #$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") # https://stackoverflow.com/questions/17794507/powershell-reload-the-path-in-powershell
