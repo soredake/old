@@ -14,10 +14,9 @@ sudo dnf install -y ${packages[@]}
 sudo dnf groupupdate core sound-and-video multimedia
 
 # https://snapcraft.io/docs/installing-snap-on-fedora
-sudo systemctl start snapd
-sudo ln -s /var/lib/snapd/snap /snap
+sudo systemctl start snapd; sudo ln -s /var/lib/snapd/snap /snap
 
-sudo snap install code --classic # https://github.com/microsoft/vscode/issues/141788 https://pagure.io/fedora-workstation/issue/283
+sudo snap install code --classic # https://github.com/microsoft/vscode/issues/141788 https://pagure.io/fedora-workstation/issue/283 https://packages.microsoft.com/yumrepos/vscode https://code.visualstudio.com/docs/setup/linux#_rhel-fedora-and-centos-based-distributions
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 sudo flatpak install -y flathub org.jdownloader.JDownloader com.viber.Viber com.github.ztefn.haguichi com.spotify.Client com.discordapp.Discord com.github.micahflee.torbrowser-launcher com.mojang.Minecraft net.rpcs3.RPCS3 org.telegram.desktop org.freefilesync.FreeFileSync
 sudo flatpak override --filesystem=xdg-config/fontconfig:ro # https://github.com/flatpak/flatpak/issues/3947
@@ -28,8 +27,7 @@ fish -c 'curl -sL https://git.io/fisher | source && fisher install jorgebucaran/
 sudo gtk-update-icon-cache /usr/share/icons/hicolor # safeeyes
 
 # setup dofiles
-etc_cp/install.sh
-home/install.sh
+etc_cp/install.sh; home/install.sh
 
 # general settings
 sudo ln -sfv "$HOME/.config/fontconfig/fonts.conf" /etc/fonts/local.conf # https://bugs.launchpad.net/snapd/+bug/1916867 https://bugzilla.mozilla.org/show_bug.cgi?id=1760996
