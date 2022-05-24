@@ -914,3 +914,69 @@ bash.exe -c 'sudo apt update && sudo add-apt-repository -y ppa:fish-shell/releas
 ln -sfv ~/.config/internetarchive/ia.ini ~/.config/ia.ini
 mkdir ~/.ia
 ln -sfv ~/.config/internetarchive/ia.ini ~/.ia/ia.ini
+
+
+
+# https://github.com/microsoft/WSL/issues/4901#issuecomment-1027762021
+#Disable-NetAdapterLso -Name "vEthernet (WSL)"
+
+# https://github.com/farag2/Sophia-Script-for-Windows/blob/d1e5ce4c20ee30e2d8fbefc63807289ac7cbd1be/Sophia%20Script/Sophia%20Script%20for%20Windows%2011%20PowerShell%207/Module/Sophia.psm1#L11466
+#New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\ContextMenuHandlers\SendTo -Name "(default)" -PropertyType String -Value "-{7BA4C740-9E81-11CF-99D3-00AA004AE837}" -Force
+# https://github.com/farag2/Sophia-Script-for-Windows/blob/d1e5ce4c20ee30e2d8fbefc63807289ac7cbd1be/Sophia%20Script/Sophia%20Script%20for%20Windows%2011%20PowerShell%207/Module/Sophia.psm1#L11142
+#New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
+#New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{7AD84985-87B4-4a16-BE58-8B72A5B390F7}" -PropertyType String -Value "Play to menu" -Force
+
+$Shortcut = $WshShell.CreateShortcut("$env:USERPROFILE\Desktop\128Bit-Yuzu Maintenance Tool.lnk")
+$Shortcut.TargetPath = "$env:LOCALAPPDATA\128Bit-Yuzu\maintenancetool.exe"
+$Shortcut.Save()
+
+# disable hibernation
+powercfg /hibernate off
+
+choco install -y msys2
+
+# msys2, python is neeed for npm/yarn completion in fish
+C:\tools\msys64\mingw64.exe pacman.exe -S --noconfirm zsh fish python diffutils winpty
+
+mkdir "C:\tools\msys64\home\user"
+New-Item -ItemType SymbolicLink -Path "C:\tools\msys64\home\user\.zshrc" -Target ".\.zshrc"
+New-Item -ItemType SymbolicLink -Path "C:\tools\msys64\home\user\.gitconfig" -Target ".\dotfiles\.gitconfig"
+New-Item -ItemType Junction -Path "C:\tools\msys64\home\user\.ssh" -Target "$env:USERPROFILE\.ssh"
+
+# "Give me updates for other Microsoft products when I update Windows", https://github.com/Disassembler0/Win10-Initial-Setup-Script/issues/250#issuecomment-503887779
+#(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
+
+function upgradeall { C:\tools\msys64\mingw64.exe pacman.exe -Syu --noconfirm}
+
+
+# https://github.com/microsoft/winget-cli/discussions/1738
+#Install-Package Microsoft.UI.Xaml -Version 2.7.1
+#Invoke-WebRequest -Uri "https://github.com/microsoft/winget-cli/releases/download/v1.2.10271/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle" -OutFile "$env:TEMP/winget.msixbundle"
+#Add-AppPackage -Path "$env:TEMP/winget.msixbundle"
+
+
+# i don't need this thanks https://github.com/AveYo/MediaCreationTool.bat/blob/8a54cb4be75be05636c2bc20841f5b2338c14a58/MediaCreationTool.bat#L833-L835
+#New-ItemProperty -Path 'HKCU:\Control Panel\UnsupportedHardwareNotificationCache' -Name 'SV2' -Value 0 -PropertyType DWord -Force
+
+
+# https://pureinfotech.com/enable-hardware-accelerated-gpu-scheduling-windows-11/
+#New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers" -Name HwSchMode -PropertyType DWord -Value 2 -Force
+
+# https://github.com/PowerShell/PowerShell/issues/14216#issuecomment-1084010061
+#Invoke-WebRequest -Uri "https://gist.githubusercontent.com/soredake/9e7b6fc7f04d9d96a2fc798b25d5186f/raw/powershell_context_shell_fix.reg" -OutFile "$env:TEMP/powershell_context_shell_fix.reg"
+#reg import "$env:TEMP/powershell_context_shell_fix.reg"
+
+#Set-ExecutionPolicy -Scope LocalMachine -ExecutionPolicy RemoteSigned -Force
+
+
+::Уменьшение времени ожидания загрузки ОС по умолчанию, если в меню более 1 пункта
+::bcdedit /timeout 3
+::Отключаем графический менеджер загрузки Windows 8 и выше (начинает работать меню по нажатии кнопки F8)
+bcdedit /set {current} bootmenupolicy legacy
+::Отключение автоматического восстановления при сбоях загрузки
+bcdedit /set recoveryenabled NO
+
+# disable lock screen, https://superuser.com/a/1659652/1506333 https://www.techrepublic.com/article/how-to-disable-the-lock-screen-in-windows-11-an-update/
+#$Key = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization"
+#If ( -Not ( Test-Path "Registry::$Key")){New-Item -Path "Registry::$Key" -ItemType RegistryKey -Force}
+#Set-ItemProperty -path "Registry::$Key" -Name "NoLockScreen" -Type "DWORD" -Value 1

@@ -5,26 +5,26 @@ sudo dnf copr enable zawertun/hack-fonts -y # https://bugzilla.redhat.com/show_b
 # Install my packages
 # TODO: icoutils(needed for exe preview) as dep for wine https://src.fedoraproject.org/rpms/wine/blob/rawhide/f/wine.spec or dolphin
 sudo dnf install -y https://github.com/rpmsphere/noarch/raw/master/r/rpmsphere-release-34-2.noarch.rpm https://mirrors.rpmfusion.org/{free/fedora/rpmfusion-,nonfree/fedora/rpmfusion-non}free-release-$(rpm -E %fedora).noarch.rpm
-packages=(https://www.vpn.net/installers/logmein-hamachi-2.1.0.203-1.x86_64.rpm https://www.thefanclub.co.za/sites/default/files/public/overgrive/overgrive-3.3.10.noarch.rpm https://github.com/TheAssassin/AppImageLauncher/releases/download/v2.2.0/appimagelauncher-2.2.0-travis995.0f91801.x86_64.rpm python3-dnf-plugin-system-upgrade bottles android-tools aria2 bleachbit chntpw fish gimp lm_sensors hack-fonts lutris mpv plasma-discover-snap qdirstat rclone-browser retroarch seahorse steam stow vitetris wine trash-cli safeeyes)
-packages+=(libappindicator-gtk3 python3-psutil cairo-devel python3-devel gobject-introspection-devel cairo-gobject-devel) # safeeyes https://github.com/slgobinath/SafeEyes/issues/432
+packages=(https://www.vpn.net/installers/logmein-hamachi-2.1.0.203-1.x86_64.rpm https://www.thefanclub.co.za/sites/default/files/public/overgrive/overgrive-3.3.10.noarch.rpm https://github.com/TheAssassin/AppImageLauncher/releases/download/v2.2.0/appimagelauncher-2.2.0-travis995.0f91801.x86_64.rpm icoutils python3-dnf-plugin-system-upgrade bottles android-tools aria2 bleachbit chntpw fish gimp lm_sensors hack-fonts lutris mpv plasma-discover-snap qdirstat rclone retroarch seahorse steam stow vitetris wine trash-cli safeeyes)
+#packages+=(libappindicator-gtk3 python3-psutil cairo-devel python3-devel gobject-introspection-devel cairo-gobject-devel) # safeeyes https://github.com/slgobinath/SafeEyes/issues/432
 sudo dnf install -y ${packages[@]}
 # https://rpmfusion.org/Configuration
 # https://fedoramagazine.org/things-to-do-after-installing-fedora-34-workstation/
 # https://docs.fedoraproject.org/en-US/quick-docs/assembly_installing-plugins-for-playing-movies-and-music/
-sudo dnf groupupdate core sound-and-video multimedia
+sudo dnf groupupdate -y core sound-and-video multimedia
 
 # https://snapcraft.io/docs/installing-snap-on-fedora
 sudo systemctl start snapd; sudo ln -s /var/lib/snapd/snap /snap
 
 sudo snap install code --classic # https://github.com/microsoft/vscode/issues/141788 https://pagure.io/fedora-workstation/issue/283 https://packages.microsoft.com/yumrepos/vscode https://code.visualstudio.com/docs/setup/linux#_rhel-fedora-and-centos-based-distributions
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-sudo flatpak install -y flathub org.jdownloader.JDownloader com.viber.Viber com.github.ztefn.haguichi com.spotify.Client com.discordapp.Discord com.github.micahflee.torbrowser-launcher com.mojang.Minecraft net.rpcs3.RPCS3 org.telegram.desktop org.freefilesync.FreeFileSync
+sudo flatpak install -y flathub org.jdownloader.JDownloader com.viber.Viber com.github.ztefn.haguichi com.spotify.Client com.discordapp.Discord com.github.micahflee.torbrowser-launcher net.rpcs3.RPCS3
 sudo flatpak override --filesystem=xdg-config/fontconfig:ro # https://github.com/flatpak/flatpak/issues/3947
-sudo flatpak override org.jdownloader.JDownloader --filesystem=host # https://github.com/flathub/org.jdownloader.JDownloader/pull/19
-pip install --user git+https://github.com/simons-public/protonfixes protontricks internetarchive safeeyes
+sudo flatpak override org.jdownloader.JDownloader --filesystem=host # https://github.com/flathub/org.jdownloader.JDownloader/pull/19 or https://github.com/pkg-src/jdownloader2.snap
+pip install --user git+https://github.com/simons-public/protonfixes protontricks internetarchive # safeeyes
 fish -c 'curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher pure-fish/pure'
 #aria2c -c -d "$HOME/.config/mpv/scripts" https://github.com/ekisu/mpv-webm/releases/download/latest/webm.lua
-sudo gtk-update-icon-cache /usr/share/icons/hicolor # safeeyes
+gtk-update-icon-cache "$HOME/.local/share/icons/hicolor" # safeeyes
 
 # setup dofiles
 etc_cp/install.sh; home/install.sh
@@ -33,3 +33,17 @@ etc_cp/install.sh; home/install.sh
 sudo ln -sfv "$HOME/.config/fontconfig/fonts.conf" /etc/fonts/local.conf # https://bugs.launchpad.net/snapd/+bug/1916867 https://bugzilla.mozilla.org/show_bug.cgi?id=1760996
 sudo tee -a /usr/share/sddm/scripts/Xsetup <<< "xmodmap /home/danet/git/dotfiles_home/home/xmodmap/.Xmodmap"
 #sed -e '$aHidden=True' /etc/xdg/autostart/org.kde.discover.notifier.desktop > "$HOME/.config/autostart/org.kde.discover.notifier.desktop" # https://bugs.kde.org/show_bug.cgi?id=413053
+
+# https://github.com/probonopd/go-appimage/blob/master/src/appimaged/README.md
+mkdir ~/Applications
+wget -c https://github.com/$(wget -q https://github.com/probonopd/go-appimage/releases -O - | grep "appimaged-.*-x86_64.AppImage" | head -n 1 | cut -d '"' -f 2) -P ~/Applications/
+chmod +x ~/Applications/appimaged-*.AppImage
+# Launch
+~/Applications/appimaged-*.AppImage
+# syncplay
+wget -O ~/Applications https://github.com/Syncplay/syncplay/releases/download/v1.6.9/Syncplay-1.6.9-x86_64.AppImage
+# 64gram
+cd ~/Applications
+wget -O ~/Applications https://github.com/TDesktop-x64/tdesktop/releases/download/v1.0.34/64Gram_1.0.34_linux.zip
+unzip 64* -d 64gram
+~/Applications/64gram/Telegram
