@@ -980,3 +980,33 @@ bcdedit /set recoveryenabled NO
 #$Key = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization"
 #If ( -Not ( Test-Path "Registry::$Key")){New-Item -Path "Registry::$Key" -ItemType RegistryKey -Force}
 #Set-ItemProperty -path "Registry::$Key" -Name "NoLockScreen" -Type "DWORD" -Value 1
+
+# https://github.com/po5/mpv_sponsorblock
+#git clone --depth=1 "https://github.com/po5/mpv_sponsorblock.git" $env:APPDATA\mpv.net\scripts
+#Remove-Item -LiteralPath "$env:APPDATA\mpv.net\scripts\.git" -Force -Recurse
+#Remove-Item "$env:APPDATA\mpv.net\scripts\*" -include README.md, LICENSE
+# https://www.kittell.net/code/powershell-unix-sed-equivalent-change-text-file/
+#(Get-Content $env:APPDATA\mpv.net\scripts\sponsorblock.lua).replace('local_database = true', 'local_database = false') | Set-Content $env:APPDATA\mpv.net\scripts\sponsorblock.lua
+
+
+# safeeyes pip
+#packages+=(libappindicator-gtk3 python3-psutil cairo-devel python3-devel gobject-introspection-devel cairo-gobject-devel) # safeeyes https://github.com/slgobinath/SafeEyes/issues/432
+sudo pip install safeeyes
+#gtk-update-icon-cache "$HOME/.local/share/icons/hicolor" # safeeyes
+
+
+ForEach ($task in "\Achievement Watcher Upgrade OnLogon","\OneDrive Reporting Task-S-1-5-21-10046236-1389244250-3883847028-500","\OneDrive Standalone Update Task-S-1-5-21-10046236-1389244250-3883847028-500") { schtasks /delete /tn "$task" /f }
+
+#ytdl-raw-options=extractor-args="youtube:player-client=ios"
+# avc1 uses nv12, av01/vp9 uses yuv420
+#ytdl-format=bestvideo[vcodec^=avc1]+bestaudio[ext=m4a]
+#ytdl-format=bestvideo[height<=?720]+bestaudio/best
+#ytdl-format=bestvideo[height<=?720][vcodec^=avc1]+bestaudio[ext=m4a]
+#demuxer-max-bytes=512MiB
+#cache-secs=600
+
+curl --create-dirs -O --output-dir "$HOME/.config/mpv/scripts" https://github.com/ekisu/mpv-webm/releases/download/latest/webm.lua https://raw.githubusercontent.com/ekisu/mpv-webm/master/build-webm-conf.lua
+wget -P "$HOME/.config/mpv/scripts" https://github.com/ekisu/mpv-webm/releases/download/latest/webm.lua https://raw.githubusercontent.com/ekisu/mpv-webm/master/build-webm-conf.lua
+#aria2c -c -d "$HOME/.config/mpv/scripts" https://github.com/ekisu/mpv-webm/releases/download/latest/webm.lua
+
+#export PLASMA_USE_QT_SCALING=1 # https://bugs.kde.org/show_bug.cgi?id=356446
