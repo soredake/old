@@ -1010,3 +1010,33 @@ wget -P "$HOME/.config/mpv/scripts" https://github.com/ekisu/mpv-webm/releases/d
 #aria2c -c -d "$HOME/.config/mpv/scripts" https://github.com/ekisu/mpv-webm/releases/download/latest/webm.lua
 
 #export PLASMA_USE_QT_SCALING=1 # https://bugs.kde.org/show_bug.cgi?id=356446
+
+# https://www.reddit.com/r/Windows11/comments/qs96dp/comment/hkbp794/ or https://www.ghacks.net/2021/10/08/how-to-uninstall-widgets-in-windows-11/
+# https://aka.ms/AAgnpjd https://aka.ms/AAh103i
+Get-AppxPackage MicrosoftWindows.Client.WebExperience* | Remove-AppxPackage
+
+pip install --user git+https://github.com/simons-public/protonfixes # protonfixes is included with proton-ge, and i will use it anyway
+#echo -e "fastestmirror=True"|sudo tee -a /etc/dnf/dnf.conf
+#sudo dnf copr enable dawid/better_fonts -y
+
+# https://snapcraft.io/docs/installing-snap-on-fedora
+#sudo systemctl start snapd; sudo ln -s /var/lib/snapd/snap /snap
+
+# TODO: https://pagure.io/fedora-workstation/issue/283
+#sudo snap install code --classic # https://github.com/microsoft/vscode/issues/141788 https://packages.microsoft.com/yumrepos/vscode https://code.visualstudio.com/docs/setup/linux#_rhel-fedora-and-centos-based-distributions
+#sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo # TODO: https://pagure.io/fedora-workstation/issue/300
+
+# syncplay
+#wget -c https://github.com/$(wget -q https://github.com/Syncplay/syncplay/releases -O - | grep "Syncplay.*-x86_64.AppImage" | head -n 1 | cut -d '"' -f 2)
+
+#sed -e '$aHidden=True' /etc/xdg/autostart/org.kde.discover.notifier.desktop > "$HOME/.config/autostart/org.kde.discover.notifier.desktop" # https://bugs.kde.org/show_bug.cgi?id=413053
+
+# TODO: wsl --update will not be needed in future https://devblogs.microsoft.com/commandline/a-preview-of-wsl-in-the-microsoft-store-is-now-available/
+
+
+# https://github.com/bibanon/tubeup/issues/172
+#mkdir ~/.ia
+#ln -sfv ~/.config/internetarchive/ia.ini ~/.config/ia.ini
+#ln -sfv ~/.config/internetarchive/ia.ini ~/.ia/ia.ini
+
+(Get-Content $env:APPDATA\mpv.net\scripts\sponsorblock_minimal.lua).replace(',"intro","outro","interaction","selfpromo"','') | Set-Content $env:APPDATA\mpv.net\scripts\sponsorblock_minimal.lua # https://codeberg.org/jouni/mpv_sponsorblock_minimal/pulls/6
