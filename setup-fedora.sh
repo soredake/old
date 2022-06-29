@@ -1,7 +1,7 @@
 #!/bin/bash
 curl -fsSL https://rpm.nodesource.com/setup_current.x | sudo bash -
 sudo dnf copr enable batmanfeynman/syncplay -y
-sudo dnf copr enable capucho/steamtinkerlaunch -y
+sudo dnf copr enable rivenirvana/steamtinkerlaunch -y
 sudo dnf copr enable zawertun/hack-fonts -y # https://bugzilla.redhat.com/show_bug.cgi?id=1258542
 # TODO: icoutils https://src.fedoraproject.org/rpms/icoutils/pull-request/1, python3-dnf-plugin-system-upgrade https://pagure.io/fedora-kde/SIG/issue/3, btrfsmaintenance https://pagure.io/fedora-btrfs/project/issue/16
 # lutris/bottles/retroarch/steam flatpak blockers: https://github.com/flathub/net.lutris.Lutris/issues/198 https://github.com/bottlesdevs/Bottles/issues/1571 https://github.com/flathub/com.valvesoftware.Steam/issues/770 https://github.com/flatpak/flatpak/pull/4083 https://github.com/flathub/org.libretro.RetroArch/issues/194 https://github.com/flatpak/flatpak/issues/4405 https://github.com/systemd/systemd/issues/22681 https://github.com/PaulCombal/SamRewritten/issues/128
@@ -15,6 +15,7 @@ pip install --user internetarchive
 fish -c 'curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher pure-fish/pure'
 wget -P "$HOME/.config/mpv/scripts" https://github.com/ekisu/mpv-webm/releases/download/latest/webm.lua
 # https://yarnpkg.com/getting-started/install https://nodejs.org/dist/latest/docs/api/corepack.html
+# TODO: create .local/bin by default in fedora?
 mkdir ~/.local/bin; corepack enable --install-directory ~/.local/bin; yarn set version stable
 # https://github.com/probonopd/go-appimage/blob/master/src/appimaged/README.md
 mkdir ~/Applications
@@ -26,7 +27,7 @@ chmod +x appimaged-*.AppImage
 wget -c https://github.com/$(wget -q https://github.com/TDesktop-x64/tdesktop/releases -O - | grep "64Gram.*_linux.zip" | head -n 1 | cut -d '"' -f 2)
 unzip 64* -d 64gram
 ./64gram/Telegram
-# TODO: itch steascree emusak-ui
+# TODO: itch(https://github.com/itchio/itch/issues/2793) steascree(https://github.com/awthwathje/SteaScree/issues/35) emusak-ui(TODO: request flatpak)
 
 etc_cp/install.sh; home/install.sh
 

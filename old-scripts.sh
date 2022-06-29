@@ -1040,3 +1040,15 @@ pip install --user git+https://github.com/simons-public/protonfixes # protonfixe
 #ln -sfv ~/.config/internetarchive/ia.ini ~/.ia/ia.ini
 
 (Get-Content $env:APPDATA\mpv.net\scripts\sponsorblock_minimal.lua).replace(',"intro","outro","interaction","selfpromo"','') | Set-Content $env:APPDATA\mpv.net\scripts\sponsorblock_minimal.lua # https://codeberg.org/jouni/mpv_sponsorblock_minimal/pulls/6
+
+# https://codeberg.org/jouni/mpv_sponsorblock_minimal
+Invoke-WebRequest -Uri "https://codeberg.org/jouni/mpv_sponsorblock_minimal/raw/branch/master/sponsorblock_minimal.lua" -OutFile $env:APPDATA\mpv.net\scripts\sponsorblock_minimal.lua
+# https://github.com/fbriere/mpv-scripts/tree/master/scripts
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/fbriere/mpv-scripts/master/scripts/tree-profiles.lua" -OutFile $env:APPDATA\mpv.net\scripts\tree-profiles.lua
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/fbriere/mpv-scripts/master/scripts/brace-expand.lua" -OutFile $env:APPDATA\mpv.net\scripts\brace-expand.lua
+
+
+# shortcuts, https://stackoverflow.com/a/31815367
+$WshShell = New-Object -comObject WScript.Shell; $Shortcut = $WshShell.CreateShortcut("$env:USERPROFILE\Desktop\RTSS.lnk"); $Shortcut.TargetPath = "C:\Program Files (x86)\RivaTuner Statistics Server\RTSS.exe"; $Shortcut.Save() # TODO: propose creating a link for it here https://github.com/HunterZ/choco
+$Shortcut = $WshShell.CreateShortcut("$env:USERPROFILE\Desktop\BreakTimer - disable.lnk"); $Shortcut.TargetPath = "$env:LOCALAPPDATA\Programs\breaktimer\BreakTimer.exe"; $Shortcut.Arguments = "disable"; $Shortcut.Save()
+$Shortcut = $WshShell.CreateShortcut("$env:USERPROFILE\Desktop\BreakTimer - enable.lnk"); $Shortcut.TargetPath = "$env:LOCALAPPDATA\Programs\breaktimer\BreakTimer.exe"; $Shortcut.Arguments = "enable"; $Shortcut.Save()
