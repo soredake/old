@@ -1052,3 +1052,22 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/fbriere/mpv-scripts/ma
 $WshShell = New-Object -comObject WScript.Shell; $Shortcut = $WshShell.CreateShortcut("$env:USERPROFILE\Desktop\RTSS.lnk"); $Shortcut.TargetPath = "C:\Program Files (x86)\RivaTuner Statistics Server\RTSS.exe"; $Shortcut.Save() # TODO: propose creating a link for it here https://github.com/HunterZ/choco
 $Shortcut = $WshShell.CreateShortcut("$env:USERPROFILE\Desktop\BreakTimer - disable.lnk"); $Shortcut.TargetPath = "$env:LOCALAPPDATA\Programs\breaktimer\BreakTimer.exe"; $Shortcut.Arguments = "disable"; $Shortcut.Save()
 $Shortcut = $WshShell.CreateShortcut("$env:USERPROFILE\Desktop\BreakTimer - enable.lnk"); $Shortcut.TargetPath = "$env:LOCALAPPDATA\Programs\breaktimer\BreakTimer.exe"; $Shortcut.Arguments = "enable"; $Shortcut.Save()
+
+# https://stackoverflow.com/a/31602095
+if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) { Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs; exit }
+
+# cleanup scheduled tasks https://aka.ms/AAh3y2n
+#ForEach ($task in "OneDrive*") { Unregister-ScheduledTask "$task" -Confirm:$false }
+# explorer tweaks https://stackoverflow.com/a/8110982/4207635
+#$key = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
+#Set-ItemProperty $key Hidden 1; Set-ItemProperty $key HideFileExt 0
+# https://www.ghacks.net/2021/10/22/how-to-remove-chat-in-windows-11/
+#reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Chat" /f /v ChatIcon /t REG_DWORD /d 3
+
+# https://www.free-codecs.com/download/hevc_video_extension.htm
+#Invoke-WebRequest -Uri "https://www.free-codecs.com/download_soft.php?d=0ca6d1645416c69a1655fb4af4e2d6ab&s=1024&r=&f=hevc_video_extension.htm" -OutFile "$env:TEMP/hevc_extension.appx"
+#Add-AppPackage -Path "$env:TEMP/hevc_extension.appx"
+
+# enable cloudflare dns with DOH https://superuser.com/a/1626051/1506333 https://winitpro.ru/index.php/2020/07/10/nastroyka-dns-over-https-doh-v-windows. https://aka.ms/AAh4e0n
+#Set-DnsClientServerAddress -InterfaceIndex (Get-NetRoute | % { Process { If (!$_.RouteMetric) { $_.ifIndex } } }) -ServerAddresses "1.1.1.1","1.0.0.1"
+#New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters' -Name 'EnableAutoDoh' -Value 2 -PropertyType DWord -Force
