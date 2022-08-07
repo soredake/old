@@ -1,0 +1,25 @@
+image: archlinux/base:latest
+
+build:
+  stage: build
+  before_script:
+    - pacman -Syyu --noconfirm archiso sddm file wget bash sed grep
+    - wget -O /archiso-zfs-kde.sh https://notabug.org/soredake/dotfiles_home/raw/master/scripts/archiso-zfs-kde.sh
+    - echo "next steps is needed to fix |failed to setup loop device for| https://gitlab.com/gitlab-com/support-forum/issues/4280 https://gitlab.com/MCMic/snislive/blob/master/.gitlab-ci.yml"
+    - mknod /dev/loop0 -m0660 b 7 0
+    - mknod /dev/loop1 -m0660 b 7 1
+    - mknod /dev/loop2 -m0660 b 7 2
+    - mknod /dev/loop3 -m0660 b 7 3
+    - mknod /dev/loop4 -m0660 b 7 4
+    - mknod /dev/loop5 -m0660 b 7 5
+    - mknod /dev/loop6 -m0660 b 7 6
+    - mknod /dev/loop7 -m0660 b 7 7
+    - mknod /dev/loop8 -m0660 b 7 8
+    - mknod /dev/loop9 -m0660 b 7 9
+    - sed -i -e 's/KDE="true"/KDE="false"/g' -e "s|sudo ./build.sh|./build.sh|g" /archiso-zfs-kde.sh
+  script:
+    - bash /archiso-zfs-kde.sh /tmp
+    - mv /tmp/archiso-none-x86_64.iso .
+  artifacts:
+    paths:
+      - archiso-none-x86_64.iso
