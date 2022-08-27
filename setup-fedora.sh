@@ -5,18 +5,20 @@ sudo dnf copr enable rivenirvana/steamtinkerlaunch -y
 sudo dnf copr enable zawertun/hack-fonts -y # https://bugzilla.redhat.com/show_bug.cgi?id=1258542
 # steam-devices https://github.com/systemd/systemd/issues/22681, python3-dnf-plugin-system-upgrade https://pagure.io/fedora-kde/SIG/issue/3, btrfsmaintenance https://pagure.io/fedora-btrfs/project/issue/16
 # lutris/steam flatpak blockers: https://github.com/flathub/net.lutris.Lutris/issues/198 https://github.com/flathub/com.valvesoftware.Steam/issues/770 https://github.com/PaulCombal/SamRewritten/issues/128
-#sudo dnf remove -y 
+#sudo dnf remove -y
 sudo dnf install -y https://github.com/rpmsphere/noarch/raw/master/r/rpmsphere-release-36-1.noarch.rpm https://mirrors.rpmfusion.org/{free/fedora/rpmfusion-,nonfree/fedora/rpmfusion-non}free-release-$(rpm -E %fedora).noarch.rpm
-packages=(https://www.vpn.net/installers/logmein-hamachi-2.1.0.203-1.x86_64.rpm https://www.thefanclub.co.za/sites/default/files/public/overgrive/overgrive-3.4.3.noarch.rpm bottles nodejs btrfsmaintenance btrfs-assistant python3-dnf-plugin-system-upgrade chntpw fish lm_sensors hack-fonts lutris mpv plasma-discover-snap qdirstat rclone steam-devices steam stow vitetris wine safeeyes syncplay code protontricks tor steamtinkerlaunch mangohud vkbasalt gamescope)
+packages=(https://www.vpn.net/installers/logmein-hamachi-2.1.0.203-1.x86_64.rpm https://www.thefanclub.co.za/sites/default/files/public/overgrive/overgrive-3.4.3.noarch.rpm bottles nodejs btrfsmaintenance btrfs-assistant python3-dnf-plugin-system-upgrade chntpw fish lm_sensors hack-fonts lutris mpv plasma-discover-snap qdirstat rclone steam stow vitetris wine safeeyes syncplay code protontricks tor steamtinkerlaunch mangohud vkbasalt gamescope)
 sudo dnf install -y ${packages[@]}
 sudo dnf group install core sound-and-video multimedia # https://rpmfusion.org/Configuration
-flatpak install -y flathub org.jdownloader.JDownloader com.viber.Viber com.github.ztefn.haguichi com.spotify.Client com.discordapp.Discord com.github.micahflee.torbrowser-launcher net.rpcs3.RPCS3 net.davidotek.pupgui2 org.gnome.seahorse.Application com.github.maoschanz.drawing org.gimp.GIMP org.keepassxc.KeePassXC org.qbittorrent.qBittorrent org.zealdocs.Zeal com.parsecgaming.parsec org.ppsspp.PPSSPP com.steamgriddb.steam-rom-manager org.libretro.RetroArch
+flatpak install -y flathub org.jdownloader.JDownloader com.viber.Viber com.github.ztefn.haguichi com.spotify.Client com.discordapp.Discord com.github.micahflee.torbrowser-launcher net.rpcs3.RPCS3 net.davidotek.pupgui2 org.gnome.seahorse.Application com.github.maoschanz.drawing org.gimp.GIMP org.keepassxc.KeePassXC org.qbittorrent.qBittorrent org.zealdocs.Zeal com.parsecgaming.parsec org.ppsspp.PPSSPP com.steamgriddb.steam-rom-manager org.libretro.RetroArch com.github.mtkennerly.ludusavi io.github.philipk.boilr
 pip install --user internetarchive
 fish -c 'curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher pure-fish/pure'
-wget -P "$HOME/.config/mpv/scripts" https://github.com/ekisu/mpv-webm/releases/download/latest/webm.lua
+#wget -P "$HOME/.config/mpv/scripts" https://github.com/ekisu/mpv-webm/releases/download/latest/webm.lua
 # https://yarnpkg.com/getting-started/install https://nodejs.org/dist/latest/docs/api/corepack.html
 # TODO: create .local/bin by default in fedora?
-mkdir ~/.local/bin; corepack enable --install-directory ~/.local/bin; yarn set version stable
+mkdir ~/.local/bin
+corepack enable --install-directory ~/.local/bin
+yarn set version stable
 # https://github.com/probonopd/go-appimage/blob/master/src/appimaged/README.md
 mkdir ~/Applications
 cd ~/Applications
@@ -29,11 +31,12 @@ unzip 64* -d 64gram
 ./64gram/Telegram
 # TODO: itch(https://github.com/itchio/itch/issues/2793) steascree(https://github.com/awthwathje/SteaScree/issues/35)
 
-etc_cp/install.sh; home/install.sh
+etc_cp/install.sh
+home/install.sh
 
-sudo flatpak override --filesystem=xdg-config/fontconfig:ro # https://github.com/flatpak/flatpak/issues/3947
+sudo flatpak override --filesystem=xdg-config/fontconfig:ro              # https://github.com/flatpak/flatpak/issues/3947
 sudo ln -sfv "$HOME/.config/fontconfig/fonts.conf" /etc/fonts/local.conf # https://bugs.launchpad.net/snapd/+bug/1916867 https://bugzilla.mozilla.org/show_bug.cgi?id=1760996
-sudo tee -a /usr/share/sddm/scripts/Xsetup <<< "xmodmap /home/danet/git/dotfiles_home/home/xmodmap/.Xmodmap"
+sudo tee -a /usr/share/sddm/scripts/Xsetup <<<"xmodmap /home/danet/git/dotfiles_home/home/xmodmap/.Xmodmap"
 sudo sed -i -e "/^BTRFS_SCRUB_PERIOD=/s/=.*/=\"none\"/" -e "/^BTRFS_DEFRAG_PERIOD=/s/=.*/=\"monthly\"/" -e "/^BTRFS_DEFRAG_PATHS=/s/=.*/=\"\/\"/" -e "/^BTRFS_BALANCE_PERIOD=/s/=.*/=\"monthly\"/" /etc/sysconfig/btrfsmaintenance # https://stackoverflow.com/a/19567449/4207635
 sudo systemctl start btrfsmaintenance-refresh
 #sudo grubby --update-kernel=ALL --args="retbleed=off" # https://www.reddit.com/r/Amd/comments/vyaqwf/comment/ig1x0kq/

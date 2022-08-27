@@ -1071,3 +1071,13 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 # enable cloudflare dns with DOH https://superuser.com/a/1626051/1506333 https://winitpro.ru/index.php/2020/07/10/nastroyka-dns-over-https-doh-v-windows. https://aka.ms/AAh4e0n
 #Set-DnsClientServerAddress -InterfaceIndex (Get-NetRoute | % { Process { If (!$_.RouteMetric) { $_.ifIndex } } }) -ServerAddresses "1.1.1.1","1.0.0.1"
 #New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters' -Name 'EnableAutoDoh' -Value 2 -PropertyType DWord -Force
+
+#sudo get-appbackgroundtask | Where-Object -Property entrypoint -like "OmenCommandCenterApp*" | select taskid | foreach {unregister-appbackgroundtask -taskid $_.TaskId} # https://sysxnull.blogspot.com/2020/03/unregister-background-tasks-with.html
+sudo choco install -y AdoptOpenJDK11openj9 --params="/ADDLOCAL=FeatureJavaHome"
+
+cache=yes
+demuxer-max-bytes=2GiB
+demuxer-readahead-secs=300
+
+    //"terminal.integrated.shell.windows": "C:\\tools\\msys64\\msys2_shell.cmd",
+    //"terminal.integrated.shellArgs.windows": ["-defterm", "-no-start", "-mingw64", "-use-full-path", "-here", "-shell", "zsh"],
