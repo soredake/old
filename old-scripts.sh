@@ -1081,3 +1081,31 @@ demuxer-readahead-secs=300
 
     //"terminal.integrated.shell.windows": "C:\\tools\\msys64\\msys2_shell.cmd",
     //"terminal.integrated.shellArgs.windows": ["-defterm", "-no-start", "-mingw64", "-use-full-path", "-here", "-shell", "zsh"],
+
+
+Remove-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run' -Name "MicrosoftEdgeAutoLaunch_8714F0D917266FE3AFB7F8BB98EEBC18"
+
+  // https://stackoverflow.com/a/46838044
+    "ZSH/MSYS2": {
+      "path": "C:\\tools\\msys64\\usr\\bin\\zsh.exe",
+      "args": ["--login", "-i"],
+      "overrideName": true,
+      "icon": "C:\\tools\\msys64\\usr\\bin\\zsh.exe",
+      "env": {
+        "MSYSTEM": "MINGW64",
+        "MSYS2_PATH_TYPE": "inherit",
+        "CHERE_INVOKING": "1"
+      }
+    },
+
+
+# -e "/^BTRFS_DEFRAG_PERIOD=/s/=.*/=\"monthly\"/" -e "/^BTRFS_DEFRAG_PATHS=/s/=.*/=\"\/\"/" https://github.com/kdave/btrfsmaintenance/issues/86
+
+
+Set-ScheduledTask WakeUpAndContinueUpdates -Settings waketorun:$false
+Set-ScheduledTask WakeUpAndScanForUpdates -Settings waketorun:$false
+Set-ScheduledJobOption -WakeToRun:$false WakeUpAndContinueUpdates
+Register-ScheduledJob -Name 'WakeUpAndContinueUpdates' -ScheduledJobOption (New-ScheduledJobOption -WakeToRun:$false)
+Get-ScheduledJob -Name 'WakeUpAndContinueUpdates' | Set-ScheduledJobOption -WakeToRun:$false
+Get-ScheduledJob -Name "WakeUpAndContinueUpdates" | Get-ScheduledJobOption | Set-ScheduledJobOption -WakeToRun:$false
+
