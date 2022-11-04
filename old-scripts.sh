@@ -1109,3 +1109,31 @@ Register-ScheduledJob -Name 'WakeUpAndContinueUpdates' -ScheduledJobOption (New-
 Get-ScheduledJob -Name 'WakeUpAndContinueUpdates' | Set-ScheduledJobOption -WakeToRun:$false
 Get-ScheduledJob -Name "WakeUpAndContinueUpdates" | Get-ScheduledJobOption | Set-ScheduledJobOption -WakeToRun:$false
 
+
+# New-Shortcut -Name 'Ryujinx' -Path $HOME\Desktop -Target "C:\tools\ryujinx\publish\Ryujinx.exe" # https://github.com/ark0f/choco-ryujinx/issues/11
+
+# disable autorun for all devices
+#sudo reg add 'HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer' /v 'NoAutoplayfornonVolume' /t REG_DWORD /d 1 /f
+#sudo reg add 'HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer' /v 'NoDriveTypeAutoRun' /t REG_DWORD /d 255 /f
+
+# sudo pwsh -c 'Set-ScheduledTask -TaskName Winget-AutoUpdate -Trigger (New-ScheduledTaskTrigger -Weekly -At 12:00 -DaysOfWeek 2)'
+
+#ForEach ($app in '64gram','achievement-watcher','ryujinx','steam-rom-manager','itch','zoom','powertoys','keepassxc','googledrive','parsec','goggalaxy','hamachi','protonvpn','steam-client','rpcs3','pcsx2-dev','tor-browser','hidhide') { sudo choco pin add -n="$app"} # https://github.com/chocolatey/choco/issues/1607
+
+
+# allow built-in update to work
+# sudo takeown /a /r /d Y /f C:\ProgramData\chocolatey\lib\ds4windows\tools\DS4Windows
+# sudo icacls "C:\ProgramData\chocolatey\lib\ds4windows\tools\DS4Windows" /grant Пользователи:F # https://stackoverflow.com/questions/2928738/how-to-grant-permission-to-users-for-a-directory-using-command-line-in-windows
+# New-Item -ItemType HardLink -Path "$HOME\.config\ia.ini" -Target "$HOME\.config\internetarchive\ia.ini"
+
+# Remove-Item -Path 'HKCU:\AppEvents\Schemes\Apps\.Default\DeviceConnect\.Current' -Force; Remove-Item -Path 'HKCU:\AppEvents\Schemes\Apps\.Default\DeviceDisconnect\.Current' -Force
+# Remove-Item -Path "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\Achievement Watcher.lnk"; Remove-Item -Path "$HOME\Desktop\Google Docs.lnk"; Remove-Item -Path "$HOME\Desktop\Google Sheets.lnk"; Remove-Item -Path "$HOME\Desktop\Google Slides.lnk"
+
+#sudo dnf copr enable elxreno/bees -y
+#sudo grubby --update-kernel=ALL --args="retbleed=off" # https://www.reddit.com/r/Amd/comments/vyaqwf/comment/ig1x0kq/
+# bees setup
+# export UUID="$(blkid -o value -s UUID /dev/nvme0n1p2)"
+# sudo cp /etc/bees/beesd.conf.sample /etc/bees/$UUID.conf
+# sudo sed -i "s|xxxxxxxx-xx.*|$UUID|" /etc/bees/$UUID.conf
+# sudo systemctl enable --now beesd@$UUID.service
+
