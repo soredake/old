@@ -1137,3 +1137,58 @@ Get-ScheduledJob -Name "WakeUpAndContinueUpdates" | Get-ScheduledJobOption | Set
 # sudo sed -i "s|xxxxxxxx-xx.*|$UUID|" /etc/bees/$UUID.conf
 # sudo systemctl enable --now beesd@$UUID.service
 
+
+# https://devblogs.microsoft.com/commandline/a-preview-of-wsl-in-the-microsoft-store-is-now-available/dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all https://github.com/microsoft/WSL/releases/tag/0.50.2 https://www.microsoft.com/store/productId/9P9TQF7MRM4R https://www.microsoft.com/store/productId/9PDXGNCFSCZV
+
+# 
+# 
+# 
+# 
+# # sudo dnf module install -y nodejs:18/common
+
+
+  #C:\Program` Files\7-Zip\7z.exe -mx=9 a "C:\Users\User\Мой диск\документы\backups\rpcs3_saves.zip" "C:\tools\RPCS3\dev_hdd0\home\00000001\savedata\*"
+  #Start-Sleep -Seconds 20
+
+# [4k60]
+profile-desc=Mess up video when entering fullscreen
+profile-cond=(width >= 2560 and p["estimated-vf-fps"]>=60)
+profile-restore=copy
+video-sync=audio
+# vd-lavc-dr=yes
+# hwdec=no
+# scale=bilinear
+# cscale=bilinear
+# dscale=bilinear
+# deband=no
+# sigmoid-upscaling=no
+# linear-downscaling=no
+# correct-downscaling=no
+# dither-depth=no
+# # profile=gpu-hq
+deband=no
+sws-allow-zimg=yes
+sws-scaler=bilinear
+sws-fast=yes
+zimg-scaler=bilinear
+zimg-dither=no
+dither-depth=no
+scale=bilinear
+cscale=bilinear
+dscale=bilinear
+scale-antiring=0
+cscale-antiring=0
+dither-depth=no
+correct-downscaling=no
+sigmoid-upscaling=no
+hdr-compute-peak=no
+d3d11va-zero-copy=yes
+
+
+
+# https://windowsloop.com/how-to-remove-amd-radeon-software-from-context-menu/
+# sudo reg delete "HKLM\SOFTWARE\Classes\Directory\background\shellex\ContextMenuHandlers\ACE" /f
+
+
+# fix lychee selecting wrong adapter https://support.logmeininc.com/central/help/why-does-my-internet-connection-fail-when-hamachi-is-enabled https://cloudrun.co.uk/windows10/set-network-interface-priority-in-windows-10-using-set-netipinterface/ https://github.com/lycheeverse/lychee/issues/902 https://github.com/lycheeverse/lychee/issues/902
+# sudo 'Get-NetAdapter | Where-Object -FilterScript {$_.InterfaceAlias -like "Hamachi"} | Set-NetIPInterface -InterfaceMetric 9999' # TODO: report this there https://github.com/seanmonstar/reqwest https://github.com/hyperium/hyper TODO: if i put 9999 to metric to hamachi it timeouts less often, disable adapther fixes the issue https://github.com/lycheeverse/lychee/issues/902#issuecomment-1372842422
