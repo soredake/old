@@ -1192,3 +1192,35 @@ d3d11va-zero-copy=yes
 
 # fix lychee selecting wrong adapter https://support.logmeininc.com/central/help/why-does-my-internet-connection-fail-when-hamachi-is-enabled https://cloudrun.co.uk/windows10/set-network-interface-priority-in-windows-10-using-set-netipinterface/ https://github.com/lycheeverse/lychee/issues/902 https://github.com/lycheeverse/lychee/issues/902
 # sudo 'Get-NetAdapter | Where-Object -FilterScript {$_.InterfaceAlias -like "Hamachi"} | Set-NetIPInterface -InterfaceMetric 9999' # TODO: report this there https://github.com/seanmonstar/reqwest https://github.com/hyperium/hyper TODO: if i put 9999 to metric to hamachi it timeouts less often, disable adapther fixes the issue https://github.com/lycheeverse/lychee/issues/902#issuecomment-1372842422
+
+
+# sudo schtasks /create /tn "switch language with right ctrl" /sc onlogon /rl highest /tr "$HOME\lswitch.exe 163"
+# schtasks /run /tn "switch language with right ctrl"
+
+
+# New-Shortcut -Name 'PPSSPP' -Path $HOME\Desktop -Target "C:\Program Files\PPSSPP\PPSSPPWindows64.exe" # TODO: будут ли при апдейте созданы ярлыки обратно? https://github.com/kzdixon/chocolatey-packages/commit/66e63fe217c4d9d22210a09f3d555ff3da880cf6
+
+
+#sudo corepack enable; yarn set version stable # https://yarnpkg.com/getting-started/install https://nodejs.org/dist/latest/docs/api/corepack.html
+
+# stop device connect/remove sound
+#Remove-Item -Path 'HKCU:\AppEvents\Schemes\Apps\.Default\DeviceConnect\.Current','HKCU:\AppEvents\Schemes\Apps\.Default\DeviceDisconnect\.Current' -Force
+
+[sample]
+profile-desc="tree:E:\folder"
+sid=2
+
+
+sudo robocopy H:\ E:\ /MIR /COPYALL /Z /B /J /R:3 /W:1 /REG /TEE
+
+# mirror external disk to another external disk
+# Register-ScheduledTask -Action (New-ScheduledTaskAction -Execute "$env:LOCALAPPDATA\Microsoft\WindowsApps\wt.exe" -Argument '--title "mirror external disk to another external disk" pwsh -c mirrorexternaldisk') -TaskName "External disk mirroring" -Settings (New-ScheduledTaskSettingsSet -StartWhenAvailable -RunOnlyIfNetworkAvailable) -Trigger (New-ScheduledTaskTrigger -Weekly -DaysOfWeek Monday -At 12:00)
+
+function mirrorexternaldisk {
+  if (Test-Path -Path "\\WIN-KTRSBU9GE9P\Transcend\mirror") {
+    rclone sync -P --progress-terminal-title --exclude "backups/" --exclude '$RECYCLE.BIN/' --exclude 'System Volume Information/' --exclude 'w3/' --exclude 'music/' --exclude 'Windows*/' --exclude 'WinPE*/' E:\ \\WIN-KTRSBU9GE9P\Transcend\mirror
+  }
+}
+
+
+if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) { Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs; exit }
