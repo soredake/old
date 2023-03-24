@@ -1224,3 +1224,14 @@ function mirrorexternaldisk {
 
 
 if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) { Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs; exit }
+
+#  http://time.in.ua/
+# https://techgenix.com/windows-time-sync-issues/
+net stop w32time
+w32tm /config /syncfromflags:manual /manualpeerlist:"ntp.time.in.ua ntp3.time.in.ua"
+net start w32time
+w32tm /config /update
+w32tm /resync /rediscover
+
+
+PowerShell -NoProfile -ExecutionPolicy Unrestricted -Command "& {Start-Process PowerShell -ArgumentList '-NoProfile -ExecutionPolicy Unrestricted -File $PWD\setup-winget.ps1' -Verb RunAs}";
