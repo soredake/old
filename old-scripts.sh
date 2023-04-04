@@ -1235,3 +1235,40 @@ w32tm /resync /rediscover
 
 
 PowerShell -NoProfile -ExecutionPolicy Unrestricted -Command "& {Start-Process PowerShell -ArgumentList '-NoProfile -ExecutionPolicy Unrestricted -File $PWD\setup-winget.ps1' -Verb RunAs}";
+
+# link windows terminal config
+PowerShell -NoProfile -ExecutionPolicy Unrestricted -Command "& {Start-Process PowerShell -ArgumentList '-NoProfile -ExecutionPolicy Unrestricted -File $PWD\\link-windows-terminal-config.ps1' -Verb RunAs}";
+
+# choco install -y wsldiskshrinker
+#sudo wsl --install --no-launch #Ubuntu # https://github.com/microsoft/WSL/issues/9266
+
+
+if ($PSVersionTable.PSEdition -ne "Core") {
+  # setup winget https://github.com/microsoft/winget-cli/discussions/1691#discussioncomment-1684313 https://www.tenforums.com/general-support/50444-how-run-ps1-file-administrator.html#post670680
+  #Start-Process powershell -ArgumentList "-c (Get-AppxProvisionedPackage -Online -LogLevel Warnings | Where-Object -Property DisplayName -EQ Microsoft.DesktopAppInstaller).InstallLocation -replace '%SYSTEMDRIVE%', '$env:SystemDrive' | Add-AppxPackage -Register -DisableDevelopmentMode" -Verb runAs
+  # install pwsh
+  winget install -h --accept-package-agreements --accept-source-agreements Microsoft.PowerShell
+  pwsh $PSCommandPath
+  exit
+}
+
+
+# https://winaero.com/windows-10-deleting-thumbnail-cache/
+# TODO: is this needed?
+# sudo Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail` Cache' -Name 'Autorun' -Value 0 -Force
+
+
+sudo Set-DnsClientServerAddress -InterfaceIndex (Get-NetRoute | % { Process { If (!$_.RouteMetric) { $_.ifIndex } } }) -ServerAddresses "1.1.1.1", "1.0.0.1"
+
+# "DefaultTerminalApp -WindowsTerminal" https://www.phoronix.com/news/Windows-11-22H2-Terminal https://devblogs.microsoft.com/commandline/windows-terminal-is-now-the-default-in-windows-11/
+
+# TODO: sophiscript
+# CleanupTask -Register, SoftwareDistributionTask -Register, TempTask -Register, StorageSenseTempFiles -Enable, GPUScheduling -Enable, StorageSense -Enable, StorageSenseFrequency -Month, WindowsSandbox -Enable
+
+
+
+# sudo Set-Service -Name "AUEPLauncher" -Status stopped -StartupType disabled
+# sudo Disable-ScheduledTask "StartAUEP"
+
+# https://wccftech.com/how-to/how-to-disable-windows-10-background-apps/ https://www.outsidethebox.ms/21739/
+# reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v "GlobalUserDisabled" /t REG_DWORD /d 1 /f
