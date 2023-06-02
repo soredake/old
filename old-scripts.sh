@@ -1272,3 +1272,87 @@ sudo Set-DnsClientServerAddress -InterfaceIndex (Get-NetRoute | % { Process { If
 
 # https://wccftech.com/how-to/how-to-disable-windows-10-background-apps/ https://www.outsidethebox.ms/21739/
 # reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v "GlobalUserDisabled" /t REG_DWORD /d 1 /f
+
+New-Shortcut -Name 'RTSS' -Path $HOME\Desktop -Target "C:\Program Files (x86)\RivaTuner Statistics Server\RTSS.exe"
+
+
+# https://github.com/farag2/Sophia-Script-for-Windows/blob/bd7857d984f92397839b2c73f7536c0bafbc8fdd/src/Sophia_Script_for_Windows_11_PowerShell_7/Module/Sophia.psm1#L13000-L13008
+  sudo New-NetIPAddress -InterfaceIndex (Get-NetAdapter -Physical | ? {$_.Status -eq "Up"} | Select ifIndex | Select-String -Pattern "[0-9]+" | % { $_.Matches } | % { $_.Value}) -IPAddress 192.168.0.145 -AddressFamily IPv4 -PrefixLength 24 -DefaultGateway 192.168.0.1
+  # sudo Set-DnsClientServerAddress -InterfaceIndex (Get-NetAdapter -Physical | ? {$_.Status -eq "Up"} | Select ifIndex | Select-String -Pattern "[0-9]+" | % { $_.Matches } | % { $_.Value}) -ServerAddresses "1.1.1.1", "1.0.0.1"
+
+New-Shortcut -Name 'Yuzu EA no update' -Path $HOME\Desktop -Target "$env:LOCALAPPDATA\yuzu\yuzu-windows-msvc-early-access\yuzu.exe" # https://github.com/yuzu-emu/yuzu/issues/9380
+
+sudo Disable-ScheduledTask "SystemOptimizer"
+sudo Disable-ScheduledTask "OmenOverlay"
+
+sudo Disable-ScheduledTask "Microsoft\Windows\Management\Provisioning\Logon" # https://habr.com/ru/news/t/586786/comments/#comment_23656428 https://aka.ms/AAh177w
+
+
+# screenshot-format=webp
+# screenshot-high-bit-depth=no
+# screenshot-webp-quality=90
+
+
+# https://habr.com/ru/news/651217/
+# https://learn.microsoft.com/en-us/answers/questions/1076711/install-wmic-to-a-windows-11-computer?orderby=oldest
+#  DISM /Online /Add-Capability /CapabilityName:WMIC~~~~ 
+#  https://www.google.com/search?client=firefox-b-d&q=+wmic+pagefileset+where+%22Description+%3D+Invalid+query%22
+# https://theblownlightbulb.wordpress.com/2012/02/03/fix-description-invalid-query-when-changing-page-file-location-in-windows-server-2008-r2-core/
+# https://www.google.com/search?q=windows+powershell+for+wmi&client=firefox-b-d&sxsrf=APwXEdfvN1ePkUCu3uX3kjYy5h63yg3aJQ%3A1682102437779&ved=0ahUKEwingp7yz7v-AhVvwosKHTpBDnEQ4dUDCA4&uact=5&sclient=gws-wiz-serp
+# https://learn.microsoft.com/ru-ru/powershell/scripting/learn/ps101/07-working-with-wmi?view=powershell-7.3
+# https://learn.microsoft.com/en-us/powershell/scripting/learn/ps101/07-working-with-wmi?view=powershell-7.3
+# https://www.google.com/search?client=firefox-b-d&q=windows+11+wmic
+# https://habr.com/ru/news/651217/
+# https://learn.microsoft.com/en-us/answers/questions/1076711/install-wmic-to-a-windows-11-computer?orderby=oldest
+# https://www.google.com/search?q=wmic+pagefile+%22No+Instance(s)+Available.%22&client=firefox-b-d&sxsrf=APwXEddvgk-bzlN3xQle0CYDFhYH20DWpw:1682100340365&start=10&ved=2ahUKEwiwj46KyLv-AhVSlYsKHbopCmUQ8NMDegQILBAI
+# https://superuser.com/questions/1024034/no-instances-available-error-with-the-wmic-command
+# https://www.google.com/search?q=wmic+pagefile+delete+windows+11&client=firefox-b-d&sxsrf=APwXEdcaE0fxyXWL2sqRcj3XyQT54ksn-A%3A1682100528489&ved=0ahUKEwiAmujjyLv-AhVgAxAIHdlADh8Q4dUDCA4&uact=5&sclient=gws-wiz-serp
+# https://www.windowscentral.com/software-apps/windows-11/how-to-manage-virtual-memory-on-windows-11
+# https://www.theunfolder.com/increase-virtual-memory-windows-11/
+# https://www.google.com/search?q=windows+11+command+line+disable+pagefile&client=firefox-b-d&sxsrf=APwXEdd73trDIcPLew0YPxtxGcPIyjb6UA%3A1682099543808&ved=0ahUKEwjQjKSOxbv-AhWuCBAIHXp-AE8Q4dUDCA4&uact=5&sclient=gws-wiz-serp
+# https://www.elevenforum.com/t/manage-virtual-memory-paging-file-in-windows-11.8618/
+# https://superuser.com/questions/952599/how-to-completely-disable-pagefile-use-wmic
+# https://www.reddit.com/r/Windows10HowTo/comments/yj6ve9/delete_pagefilesys_or_reduce_its_size_in_windows/
+# https://help.pdq.com/hc/en-us/community/posts/115002970512-Powershell-script-to-change-Pagefile-Virtual-memory-size-on-remote-computers-using-PDQ-deploy-
+# https://powershell.one/wmi/root/cimv2/win32_pagefileusage
+# https://serverfault.com/questions/558069/use-wmi-to-remove-a-page-file
+# https://www.tutorialspoint.com/how-to-change-pagefile-settings-using-powershell
+# https://www.powershellgallery.com/packages?q=page+file
+# https://www.powershellgallery.com/packages/Carbon/2.13.0
+# https://get-carbon.org/documentation.html
+# https://github.com/search?q=repo%3Awebmd-health-services%2FCarbon+pagefile&type=issues
+# https://www.google.com/search?client=firefox-b-d&q=wmic+pagefileset+where
+# https://www.tenforums.com/tutorials/77692-manage-virtual-memory-pagefile-windows-10-a-2.html
+# https://github.com/microsoft/Windows-Containers/issues/271
+# https://garvis.ca/2018/02/07/change-the-page-in-command-line/
+# https://social.technet.microsoft.com/Forums/windows/en-US/708da424-3a7c-404d-8f54-f989ed62d323/command-for-changeing-the-page-file?forum=winservercore
+# https://www.itprotoday.com/windows-78/modify-pagefile-configuration-command-line
+# https://winnote.ru/instructions/282-upravlenie-faylom-podkachki-pagefilesys-s-pomoschyu-komandnoy-stroki.html
+
+
+# TODO: test this
+sudo wmic computersystem set AutomaticManagedPagefile=False
+sudo wmic pagefileset delete
+# sudo wmic pagefileset where name="C:\\pagefile.sys" delete
+
+
+# https://yarnpkg.com/getting-started/install https://nodejs.org/dist/latest/docs/api/corepack.html
+#corepack enable --install-directory ~/.local/bin; yarn set version stable
+
+
+"$HOME\Desktop\Google Docs.lnk", "$HOME\Desktop\Google Sheets.lnk", "$HOME\Desktop\Google Slides.lnk"
+
+
+# Set-Alias -Name lychee -Value $env:LOCALAPPDATA\Microsoft\WinGet\Packages\lycheeverse.lychee_Microsoft.Winget.Source_8wekyb3d8bbwe\lychee*.exe # https://github.com/microsoft/winget-cli/issues/361 https://github.com/microsoft/winget-cli/issues/2802
+
+
+# https://thewiki.moe/guides/playback/#smooth-playback
+# https://www.reddit.com/r/mpv/comments/su2mee/how_can_i_fix_jittery_video_playback/
+# [LFR]
+# profile-desc=Fix jitter on panning shots in lfr videos
+# profile-cond=p["estimated-vf-fps"] <30
+# profile-restore=copy
+# video-sync=display-resample
+
+
+Invoke-WebRequest -Uri "https://haali.net/winutils/lswitch.exe" -OutFile $HOME/lswitch.exe
