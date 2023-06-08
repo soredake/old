@@ -1356,3 +1356,9 @@ sudo wmic pagefileset delete
 
 
 Invoke-WebRequest -Uri "https://haali.net/winutils/lswitch.exe" -OutFile $HOME/lswitch.exe
+
+# codecs
+# $user += '9N95Q1ZZPMH4', '9PG2DK419DRG', '9MVZQVXJBQ9V', '9NCTDW2W1BH8', '9PMMSR1CGPWG', '9N5TDP8VCMHS'
+# "HEVC -Install"
+
+# sudo choco install -y --pin --ignorechecksum ea-app
