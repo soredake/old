@@ -1362,3 +1362,18 @@ Invoke-WebRequest -Uri "https://haali.net/winutils/lswitch.exe" -OutFile $HOME/l
 # "HEVC -Install"
 
 # sudo choco install -y --pin --ignorechecksum ea-app
+
+
+# https://winitpro.ru/index.php/2021/12/16/udalit-chat-microsoft-teams-v-windows/ https://www.outsidethebox.ms/21375/ https://aka.ms/AAh4nac
+# sudo --ti reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Communications" /v "ConfigureChatAutoInstall" /t REG_DWORD /d 0 /f
+
+
+sudo { Disable-ScheduledTask "Achievement Watcher Upgrade Daily" } # https://github.com/Xav83/chocolatey-packages/pull/24
+Remove-Item -Path "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\Achievement Watcher.lnk" # TODO: https://github.com/Xav83/chocolatey-packages/pull/24
+
+
+sudo Invoke-WebRequest -Uri "https://gist.github.com/soredake/f0c63deeaf104e30135a28c3238a6008/raw" -OutFile C:\ProgramData\Winget-AutoUpdate\excluded_apps.txt
+
+
+# https://www.outsidethebox.ms/21985/
+sudo reg add 'HKLM\SOFTWARE\Policies\Microsoft\Windows\WcmSvc\GroupPolicy' /v 'fMinimizeConnections' /t REG_DWORD /d 0 /f
