@@ -1377,3 +1377,39 @@ sudo Invoke-WebRequest -Uri "https://gist.github.com/soredake/f0c63deeaf104e3013
 
 # https://www.outsidethebox.ms/21985/
 sudo reg add 'HKLM\SOFTWARE\Policies\Microsoft\Windows\WcmSvc\GroupPolicy' /v 'fMinimizeConnections' /t REG_DWORD /d 0 /f
+
+// https://kb.mozillazine.org/Browser.link.open_newwindow
+// spotify "open in desktop app" feature annoyingly opens new tab every time
+// user_pref("browser.link.open_newwindow", 1);
+
+
+iex "& { $((iwr -useb 'https://raw.githubusercontent.com/amd64fox/SpotX/main/Install.ps1').Content) } -confirm_spoti_recomended_over -new_theme -block_update_on -podcasts_on -lyrics_stat spotify -cache_limit 2000"
+
+
+# 'Microsoft.549981C3F5F10_8wekyb3d8bbwe' - cortana https://support.microsoft.com/en-us/topic/end-of-support-for-cortana-in-windows-d025b39f-ee5b-4836-a954-0ab646ee1efa?ranMID=24542&OCID=AID2200057_aff_7593_1243925 # 'MicrosoftTeams_8wekyb3d8bbwe' # 9MSSGKG348SP # 'BlueStacks` X'
+
+function lycheefix {
+  if ($args[0] -eq "off") {
+    sudo net start Hamachi2Svc
+    sudo {
+     netsh interface set interface "ProtonVPN TUN" admin=enable
+     netsh interface set interface "Ethernet 2" admin=enable
+     netsh interface set interface "VMware Network Adapter VMnet1" admin=enable
+      netsh interface set interface "VMware Network Adapter VMnet8" admin=enable
+      netsh interface set interface "Подключение по локальной сети" admin=enable
+    }
+  }
+  else {
+    sudo net stop Hamachi2Svc
+    sudo {
+      netsh interface set interface "ProtonVPN TUN" admin=disable
+      netsh interface set interface "Ethernet 2" admin=disable
+      netsh interface set interface "VMware Network Adapter VMnet1" admin=disable
+      netsh interface set interface "VMware Network Adapter VMnet8" admin=disable
+      netsh interface set interface "Подключение по локальной сети" admin=disable
+      Get-NetAdapter | Disable-NetAdapter -Confirm:$false
+      netsh interface set interface "Ethernet 3" admin=enable
+
+    }
+  }
+}
