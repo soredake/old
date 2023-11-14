@@ -1413,3 +1413,38 @@ function lycheefix {
     }
   }
 }
+
+
+New-Shortcut -Name 'melonDS' -Path $HOME\Desktop -Target "$env:LOCALAPPDATA\Microsoft\WinGet\Packages\melonDS.melonDS_Microsoft.Winget.Source_8wekyb3d8bbwe\melonDS.exe"
+
+sudo winget install -h -e --id ViGEm.HidHide -v 1.2.98 # https://github.com/ViGEm/HidHide/issues/109 https://github.com/ViGEm/HidHide/issues/110 https://github.com/ViGEm/HidHide/issues/111
+
+
+Register-ScheduledTask -Principal (New-ScheduledTaskPrincipal -UserID "$env:USERDOMAIN\$env:USERNAME" -LogonType ServiceAccount -RunLevel Highest) -Action (New-ScheduledTaskAction -Execute "$env:LOCALAPPDATA\Microsoft\WindowsApps\wt.exe" -Argument '--title "AMD cleanup task" pwsh -c amdcleanup') -TaskName "AMD cleanup task" -Settings (New-ScheduledTaskSettingsSet -StartWhenAvailable) -Trigger (New-ScheduledTaskTrigger -Weekly -WeeksInterval 4 -DaysOfWeek Friday -At 11:00)
+
+# RamenSoftware.7+TaskbarTweaker
+New-Shortcut -Name 'SteaScree' -Path $HOME\Desktop -Target "${env:ProgramFiles(x86)}\SteaScree\SteaScree.exe"
+
+# WSL1 setup
+# New-ItemProperty 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Lxss' DefaultVersion -Value 1 -Force
+# sudo wsl --install --enable-wsl1 --no-launch
+
+# sudo --ti .\scripts\vbs-disable\vbs-disable.ps1
+
+# function hyperv_toggle {
+#   if (((sudo bcdedit /enum) -match 'hypervisorlaunchtype' -replace 'hypervisorlaunchtype    ') -eq 'Off') {
+#     write-host("Enabling Hyper-V..."); sudo bcdedit /set hypervisorlaunchtype auto
+#   }
+#   else {
+#     write-host("Disabling Hyper-V..."); sudo bcdedit /set hypervisorlaunchtype off
+#   }
+# }
+
+# function amdcleanup { Remove-Item C:\AMD\* -Recurse -Force }
+
+# function mpvnetdvd { mpvnet dvd:// --dvd-device=VIDEO_TS }
+
+  # https://www.thewindowsclub.com/backup-restore-pinned-taskbar-items-windows-10
+  # rclone sync -P "$env:APPDATA\Microsoft\Internet Explorer\Quick Launch\User Pinned\StartMenu" "$HOME\Мой диск\документы\backups\pinned_items\StartMenu"
+  # rclone sync -P "$env:APPDATA\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar" "$HOME\Мой диск\документы\backups\pinned_items\TaskBar"
+  # reg export "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Taskband" "$HOME\Мой диск\документы\backups\pinned_items\Taskband.reg" /y
