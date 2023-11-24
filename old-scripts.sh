@@ -1444,7 +1444,54 @@ New-Shortcut -Name 'SteaScree' -Path $HOME\Desktop -Target "${env:ProgramFiles(x
 
 # function mpvnetdvd { mpvnet dvd:// --dvd-device=VIDEO_TS }
 
-  # https://www.thewindowsclub.com/backup-restore-pinned-taskbar-items-windows-10
-  # rclone sync -P "$env:APPDATA\Microsoft\Internet Explorer\Quick Launch\User Pinned\StartMenu" "$HOME\Мой диск\документы\backups\pinned_items\StartMenu"
-  # rclone sync -P "$env:APPDATA\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar" "$HOME\Мой диск\документы\backups\pinned_items\TaskBar"
-  # reg export "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Taskband" "$HOME\Мой диск\документы\backups\pinned_items\Taskband.reg" /y
+sudo {
+  # DISM /Online /Disable-Feature:Microsoft-Hyper-V-All /NoRestart
+  # DISM /Online /Disable-Feature:VirtualMachinePlatform /NoRestart
+}
+
+
+######## lychee lycheeverse.lychee
+# https://www.outsidethebox.ms/21985/
+# sudo reg add 'HKLM\SOFTWARE\Policies\Microsoft\Windows\WcmSvc\GroupPolicy' /v 'fMinimizeConnections' /t REG_DWORD /d 3 /f
+
+# lychee fix
+Set-NetIPInterface -InterfaceIndex $env:interfaceIndex -InterfaceMetric 1
+
+# https://github.com/lycheeverse/lychee/issues/902
+# https://github.com/hyperium/hyper/issues/3122
+function lycheefix {
+  $env:interfaceIndex = (Get-NetRoute | Where-Object -FilterScript { $_.DestinationPrefix -eq "0.0.0.0/0" } | Get-NetAdapter).InterfaceIndex
+  if ($args[0] -eq "off") {
+    sudo net start Hamachi2Svc
+    sudo { Get-NetAdapter | Enable-NetAdapter -Confirm:$false }
+  }
+  else {
+    sudo net stop Hamachi2Svc
+    sudo { Get-NetAdapter | Disable-NetAdapter -Confirm:$false
+      Get-NetAdapter -InterfaceIndex $env:interfaceIndex | Enable-NetAdapter }
+  }
+}
+
+# function checkarchive { lycheefix; cd "$HOME\Мой диск\документы"; lychee --exclude='vk.com' --exclude='yandex.ru' --max-concurrency 10 archive-org.txt; lycheefix off }
+# function checklinux { lycheefix; cd "$HOME\Мой диск\документы"; lychee --max-concurrency 10 linux.txt; lycheefix off }
+
+
+
+# sudo Enable-ComputerRestore -Drive $env:SystemDrive
+
+# https://github.com/chocolatey/choco/issues/1465
+#sudo choco feature enable -n=useRememberedArgumentsForUpgrades -n=removePackageInformationOnUninstall
+
+sudo winget install --no-upgrade -h --accept-package-agreements --accept-source-agreements -e --id Oracle.VirtualBox -v 6.1.48
+
+
+# stop qbittorrent/ethernet from waking my pc from sleep https://superuser.com/a/1629820/1506333 https://superuser.com/a/1320579 https://aka.ms/AAkvx4s
+# sudo { powercfg /devicedisablewake "Intel(R) I211 Gigabit Network Connection #2" }
+
+
+# New-Shortcut -Name 'Disconnect gamepad' -Path $HOME\Desktop -Target "C:\Program Files\DS4Windows\DS4Windows.exe" -Arguments "-command Disconnect" -IconPath "C:\Program Files\DS4Windows\DS4Windows.exe"
+# New-Shortcut -Name 'Cheat Engine' -Path $HOME\Desktop -Target "$HOME\scoop\apps\cheat-engine\current\cheatengine-x86_64.exe"
+# New-Shortcut -Name 'PPSSPP' -Path $HOME\Desktop -Target "$env:ProgramFiles\PPSSPP\PPSSPPWindows64.exe"
+# New-Shortcut -Name 'yuzu Early Access' -Path $HOME\Desktop -Target "$HOME\scoop\apps\yuzu-pineapple\current\yuzu.exe"
+
+# Install-PackageProvider -Name NuGet -Scope CurrentUser -Confirm:$false -Force
