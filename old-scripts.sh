@@ -1495,3 +1495,14 @@ sudo winget install --no-upgrade -h --accept-package-agreements --accept-source-
 # New-Shortcut -Name 'yuzu Early Access' -Path $HOME\Desktop -Target "$HOME\scoop\apps\yuzu-pineapple\current\yuzu.exe"
 
 # Install-PackageProvider -Name NuGet -Scope CurrentUser -Confirm:$false -Force
+
+# disable hibernation
+sudo powercfg /h off
+
+  # http://war2.ru/modules/newbb_plus/viewtopic.php?topic_id=1882&forum=1
+  # https://www.ru.playblackdesert.com/Community/Detail?topicNo=45670&topicType=101#
+  $env:interfaceGuid = (Get-NetAdapter | Where-Object { $_.InterfaceDescription -like 'Intel(R) I211*' } | Select-Object -Property InterfaceGuid).InterfaceGuid
+  sudo { reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$env:interfaceGuid" /v 'TcpAckFrequency' /t REG_DWORD /d 1 /f
+    reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$env:interfaceGuid" /v 'TCPNoDelay' /t REG_DWORD /d 1 /f
+    reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$env:interfaceGuid" /v 'TcpDelAckTicks' /t REG_DWORD /d 0 /f
+    reg add 'HKLM\SOFTWARE\Microsoft\MSMQ\Parameters' /v 'TCPNoDelay' /t REG_DWORD /d 1 /f }
