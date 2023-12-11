@@ -1506,3 +1506,7 @@ sudo powercfg /h off
     reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$env:interfaceGuid" /v 'TCPNoDelay' /t REG_DWORD /d 1 /f
     reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$env:interfaceGuid" /v 'TcpDelAckTicks' /t REG_DWORD /d 0 /f
     reg add 'HKLM\SOFTWARE\Microsoft\MSMQ\Parameters' /v 'TCPNoDelay' /t REG_DWORD /d 1 /f }
+
+
+ # Create the archive with LZMA compression
+  7z a -t7z -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on "$HOME\Мой диск\документы\backups\syncthing\syncthing.7z" "$env:LOCALAPPDATA\Syncthing"
