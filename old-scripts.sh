@@ -1510,3 +1510,51 @@ sudo powercfg /h off
 
  # Create the archive with LZMA compression
   7z a -t7z -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on "$HOME\Мой диск\документы\backups\syncthing\syncthing.7z" "$env:LOCALAPPDATA\Syncthing"
+
+# https://winaero.com/change-icon-cache-size-windows-10/ https://www.elevenforum.com/t/change-icon-cache-size-in-windows-11.2050/
+# sudo { reg add 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer' /v MaxCachedIcons /t REG_SZ /d 65535 /f }
+
+# refreshenv # https://github.com/microsoft/winget-cli/issues/3077 https://github.com/chocolatey/choco/issues/2458
+
+# prefer 7zip from winget
+# scoop shim rm 7zG 7z 7zfm
+
+# trakts config set players.monitored mpv syncplay@mpv
+# trakts config set fileinfo.whitelist E:\non-anime E:\shared-unruhe E:\shared-tablet
+# trakts config set players.mpv.ipc_path '\\.\pipe\mpvsocket'
+
+# https://learn.microsoft.com/en-us/powershell/scripting/learn/experimental-features?view=powershell-7.4
+# Enable-ExperimentalFeature -Name PSCommandNotFoundSuggestion
+
+# sudo { irm https://community.chocolatey.org/install.ps1 -useb | iex }
+# Get-ChildItem -Path "C:\ProgramData\chocolatey\helpers\functions" -Filter *.ps1 | ForEach-Object { . $_.FullName }
+# refreshenv
+
+# Remove-Item -Recurse -Path ~\Downloads\Sophia*
+
+# https://www.outsidethebox.ms/9961/#default-state https://aka.ms/AAns3an
+# sudo Enable-ComputerRestore -Drive $env:SystemDrive
+
+# disable pwsh update check https://github.com/PowerShell/PowerShell/issues/19528 https://github.com/PowerShell/PowerShell/issues/19520 https://github.com/PowerShell/PowerShell/issues/20210 https://github.com/PowerShell/PowerShell/issues/20833
+#setx POWERSHELL_UPDATECHECK Off
+
+            {
+                "colorScheme": "Tango+Solarized dark",
+                "commandline": "C:/tools/msys64/msys2_shell.cmd -defterm -no-start -mingw64 -use-full-path -here -shell zsh",
+                "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+                "hidden": false,
+                "icon": "C:\\tools\\msys64\\msys2.ico",
+                "name": "MSYS2/zsh",
+                "tabTitle": "MSYS2/zsh"
+            },
+
+                        {
+                "closeOnExit": "graceful",
+                "commandline": "\"%PROGRAMFILES%\\git\\bin\\bash.exe\" --login -i -l",
+                "cursorColor": "#FFFFFF",
+                "guid": "{00000000-0000-0000-0000-000000012345}",
+                "historySize": 9001,
+                "icon": "%PROGRAMFILES%\\git\\mingw64\\share\\git\\git-for-windows.ico",
+                "name": "Git Bash",
+                "snapOnInput": true
+            },
