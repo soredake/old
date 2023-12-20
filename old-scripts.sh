@@ -1558,3 +1558,31 @@ sudo powercfg /h off
                 "name": "Git Bash",
                 "snapOnInput": true
             },
+
+
+# fix protonvpn "Unable to add IPv6 leak protection connection/interface" https://github.com/ProtonVPN/linux-app/issues/46#issuecomment-932239261
+# sudo apt-get install -y policykit-1-gnome
+# echo "[nm-applet]
+# Identity=unix-user:ubuntu
+# Action=org.freedesktop.NetworkManager.*
+# ResultAny=yes
+# ResultInactive=no
+# ResultActive=yes" | sudo tee /etc/polkit-1/localauthority/50-local.d/org.freedesktop.NetworkManager.pkla
+
+# lychee
+export lycheever=0.13.0
+wget https://github.com/lycheeverse/lychee/releases/download/v${lycheever}/lychee-v${lycheever}-x86_64-unknown-linux-gnu.tar.gz
+tar -xvzf lychee-v${lycheever}-x86_64-unknown-linux-gnu.tar.gz
+mv lychee ~/.local/bin
+rm -f lychee-v${lycheever}-x86_64-unknown-linux-gnu.tar.gz
+chmod +x ~/.local/bin/lychee
+
+
+# sudo add-apt-repository -y ppa:fish-shell/release-3
+#deb=protonvpn-stable-release_1.0.3_all.deb
+#sudo wget https://repo.protonvpn.com/debian/dists/stable/main/binary-all/$deb
+#sudo apt-get install ./$deb
+# sudo apt install protonvpn-cli
+
+
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\FileSystem" /v LongPathsEnabled /t REG_DWORD /d 1 /f
