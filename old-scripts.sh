@@ -1586,3 +1586,23 @@ chmod +x ~/.local/bin/lychee
 
 
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\FileSystem" /v LongPathsEnabled /t REG_DWORD /d 1 /f
+
+curl -L --create-dirs --remote-name-all --output-dir $env:APPDATA\mpv.net\scripts "https://raw.githubusercontent.com/fbriere/mpv-scripts/master/scripts/tree-profiles.lua" "https://raw.githubusercontent.com/fbriere/mpv-scripts/master/scripts/brace-expand.lua"
+
+# https://github.com/TairikuOokami/Windows/blob/a778fff230d348906f999ad1380e326c43a7f1bc/Windows%20Tweaks.bat#L1639-L1640
+# sudo reg add "HKLM\Software\Policies\Microsoft\Edge" /v "StartupBoostEnabled" /t REG_DWORD /d "0" /f
+
+Disable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-All, VirtualMachinePlatform
+
+# function checkarchivewindows { cd "$HOME\Мой диск\документы"; oracleproxy lychee --exclude='vk.com' --exclude='yandex.ru' --max-concurrency 10 archive-org.txt }
+# function checklinuxwindows { cd "$HOME\Мой диск\документы"; oracleproxy lychee --max-concurrency 10 linux.txt }
+
+# function checkarchive { wsl --shell-type login -- lychee --exclude='vk.com' --exclude='yandex.ru' --max-concurrency 10 /mnt/c/Users/$env:USERNAME/Мой` диск/документы/archive-org.txt }
+# function checklinux { wsl --shell-type login -- lychee --exclude='vk.com' --exclude='yandex.ru' --max-concurrency 10 /mnt/c/Users/$env:USERNAME/Мой` диск/документы/linux.txt }
+
+# sudo chsh -s /usr/bin/fish "$USER"
+# echo -e "eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)\nfish_add_path $HOME/.local/bin \nalias upall 'sudo apt update; sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y; pipx upgrade-all; brew update && brew upgrade && brew cleanup'" >>~/.config/fish/config.fish
+# echo 'echo -en "\e[6 q"' >>~/.config/fish/config.fish # no cursor blinking https://github.com/microsoft/terminal/issues/1379#issuecomment-821825557 https://github.com/fish-shell/fish-shell/issues/3741#issuecomment-273209823
+# sudo snap set system refresh.retain=2 # already set to 2 https://snapcraft.io/docs/managing-updates#heading--refresh-retain
+# https://github.com/flatpak/flatpak/issues/4484 https://github.com/flatpak/flatpak/issues/2267
+#sudo rm -rf /dev/shm; sudo mkdir /dev/shm
