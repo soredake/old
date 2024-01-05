@@ -1606,3 +1606,6 @@ Disable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-All, Virtu
 # sudo snap set system refresh.retain=2 # already set to 2 https://snapcraft.io/docs/managing-updates#heading--refresh-retain
 # https://github.com/flatpak/flatpak/issues/4484 https://github.com/flatpak/flatpak/issues/2267
 #sudo rm -rf /dev/shm; sudo mkdir /dev/shm
+
+# # https://github.com/MicrosoftDocs/windows-itpro-docs/blob/fa1414a7716f274200e9b7829124b2afac29ac20/windows/application-management/provisioned-apps-windows-client-os.md
+Get-AppxPackage | ForEach-Object { $pkg = $_; Get-StartApps | Where-Object { $_.AppID -like "*$($pkg.PackageFamilyName)*" } | ForEach-Object { New-Object PSObject -Property @{PackageFamilyName=$pkg.PackageFullName; AppName=$_.Name} } } | Format-Table -AutoSize | Out-File -FilePath .\AppList.txt
