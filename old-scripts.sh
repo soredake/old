@@ -1609,3 +1609,11 @@ Disable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-All, Virtu
 
 # # https://github.com/MicrosoftDocs/windows-itpro-docs/blob/fa1414a7716f274200e9b7829124b2afac29ac20/windows/application-management/provisioned-apps-windows-client-os.md
 Get-AppxPackage | ForEach-Object { $pkg = $_; Get-StartApps | Where-Object { $_.AppID -like "*$($pkg.PackageFamilyName)*" } | ForEach-Object { New-Object PSObject -Property @{PackageFamilyName=$pkg.PackageFullName; AppName=$_.Name} } } | Format-Table -AutoSize | Out-File -FilePath .\AppList.txt
+
+oh-my-posh font install --user Hack
+
+# sudo { reg add 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender' /v 'DisableAntiSpyware' /t REG_DWORD /d 1 /f
+#   reg add 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender' /v 'ServiceKeepAlive' /t REG_DWORD /d 0 /f
+#   reg add 'HKLM\SOFTWARE\Policies\Microsoft\Microsoft Antimalware\SpyNet' /v 'SubmitSamplesConsent' /t REG_DWORD /d 0 /f
+#   reg add 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection' /v 'DisableIOAVProtection' /t REG_DWORD /d 1 /f
+#   reg add 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection' /v 'DisableRealtimeMonitoring' /t REG_DWORD /d 1 /f }
