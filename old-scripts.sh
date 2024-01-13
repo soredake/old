@@ -1612,8 +1612,16 @@ Get-AppxPackage | ForEach-Object { $pkg = $_; Get-StartApps | Where-Object { $_.
 
 oh-my-posh font install --user Hack
 
-# sudo { reg add 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender' /v 'DisableAntiSpyware' /t REG_DWORD /d 1 /f
-#   reg add 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender' /v 'ServiceKeepAlive' /t REG_DWORD /d 0 /f
-#   reg add 'HKLM\SOFTWARE\Policies\Microsoft\Microsoft Antimalware\SpyNet' /v 'SubmitSamplesConsent' /t REG_DWORD /d 0 /f
-#   reg add 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection' /v 'DisableIOAVProtection' /t REG_DWORD /d 1 /f
-#   reg add 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection' /v 'DisableRealtimeMonitoring' /t REG_DWORD /d 1 /f }
+sudo { reg add 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender' /v 'DisableAntiSpyware' /t REG_DWORD /d 1 /f
+  reg add 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender' /v 'ServiceKeepAlive' /t REG_DWORD /d 0 /f
+  Set-MpPreference -DisableIntrusionPreventionSystem $true -DisableIOAVProtection $true -DisableScriptScanning $true -EnableControlledFolderAccess Disabled -EnableNetworkProtection AuditMode -Force -MAPSReporting Disabled -SubmitSamplesConsent NeverSend }
+
+setx PIPX_BIN_DIR $HOME\scoop\persist\python310\Scripts
+
+
+function multipassmountfix {
+  # temp fix until 1.13.0 arrive https://github.com/canonical/multipass/issues/3252
+  multipass mount C:\ primary:/mnt/c_host
+  multipass mount D:\ primary:/mnt/d_host
+  multipass mount E:\ primary:/mnt/e_host
+}
