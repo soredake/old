@@ -1625,3 +1625,10 @@ function multipassmountfix {
   multipass mount D:\ primary:/mnt/d_host
   multipass mount E:\ primary:/mnt/e_host
 }
+
+New-Shortcut -Name 'Ryujinx' -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs" -Target (where.exe Ryujinx.Ava.exe) # install it from choco again when avalonia is merged https://github.com/Ryujinx/Ryujinx/issues/3662
+New-Shortcut -Name 'WinSetView' -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs" -Target (where.exe WinSetView)
+
+function github-backup { python (where.exe github-backup) $args } # https://github.com/josegonzalez/python-github-backup/issues/112
+pip install github-backup
+
