@@ -1632,3 +1632,28 @@ New-Shortcut -Name 'WinSetView' -Path "$env:APPDATA\Microsoft\Windows\Start Menu
 function github-backup { python (where.exe github-backup) $args } # https://github.com/josegonzalez/python-github-backup/issues/112
 pip install github-backup
 
+ sudo bash -c \'docker images --format "{{.Repository}}:{{.Tag}}" | grep -v "<none>" | xargs -L1 docker pull\''
+
+
+# function upgradeall {
+#   # https://community.idera.com/database-tools/powershell/powertips/b/tips/posts/automatically-updating-modules https://github.com/PowerShell/PSResourceGet/issues/521 https://github.com/PowerShell/PSResourceGet/issues/495
+#   Get-InstalledModule | Update-Module
+#   # https://www.activestate.com/resources/quick-reads/how-to-update-all-python-packages/ https://github.com/pypa/pip/issues/4551
+#   pip freeze | % { $_.split('==')[0] } | % { pip install --upgrade $_ }
+#   pipx upgrade-all
+#   npm update -g
+#   scoop update -a
+#   scoop cleanup -ka
+#   psc update *
+# }
+
+
+  # Get-ChildItem -Path "$HOME\Мой диск\unsorted" -Recurse -File | Move-Item -Destination "$HOME\Мой диск"
+  gci "$HOME\Мой диск\unsorted" -Recurse -File | % { $destFile = "$HOME\Мой диск\$($_.Name)"; while (Test-Path $destFile) { $destFile = "$HOME\Мой диск\$([System.IO.Path]::GetFileNameWithoutExtension($_.Name))_$((Get-Random -Maximum 9999))$([System.IO.Path]::GetExtension($_.Name))" }; mv $_.FullName $destFile }
+  # rclone sync -P $env:APPDATA\VolumeLock "$HOME\Мой диск\документы\backups\volumelock"
+
+
+# Get-ChildItem -Path "C:\ProgramData\chocolatey\helpers\functions" -Filter *.ps1 | ForEach-Object { . $_.FullName }; refreshenv
+
+# TODO: FileNotFoundError: [WinError 2] The system cannot find the file specified
+curl -L -o C:\Users\user\AppData\Local\Programs\Python\Python312\Scripts\OpenSubtitlesDownload.py "https://raw.githubusercontent.com/emericg/OpenSubtitlesDownload/master/OpenSubtitlesDownload.py"
