@@ -1383,7 +1383,7 @@ sudo reg add 'HKLM\SOFTWARE\Policies\Microsoft\Windows\WcmSvc\GroupPolicy' /v 'f
 // user_pref("browser.link.open_newwindow", 1);
 
 
-iex "& { $((iwr -useb 'https://raw.githubusercontent.com/amd64fox/SpotX/main/Install.ps1').Content) } -confirm_spoti_recomended_over -new_theme -block_update_on -podcasts_on -lyrics_stat spotify -cache_limit 2000"
+iex "& { $((iwr -useb "https://raw.githubusercontent.com/amd64fox/SpotX/main/Install.ps1").Content) } -confirm_spoti_recomended_over -new_theme -block_update_on -podcasts_on -lyrics_stat spotify -cache_limit 2000"
 
 
 # 'Microsoft.549981C3F5F10_8wekyb3d8bbwe' - cortana https://support.microsoft.com/en-us/topic/end-of-support-for-cortana-in-windows-d025b39f-ee5b-4836-a954-0ab646ee1efa?ranMID=24542&OCID=AID2200057_aff_7593_1243925 # 'MicrosoftTeams_8wekyb3d8bbwe' # 9MSSGKG348SP # 'BlueStacks` X'
@@ -1663,3 +1663,14 @@ curl -L -o C:\Users\user\AppData\Local\Programs\Python\Python312\Scripts\OpenSub
 
   # upgrade task
   Register-ScheduledTask -Action (New-ScheduledTaskAction -Execute "$env:LOCALAPPDATA\Microsoft\WindowsApps\wt.exe" -Argument '--title "Upgrade everything" pwsh -c upgradeall') -TaskName "Upgrade everything" -Settings (New-ScheduledTaskSettingsSet -StartWhenAvailable -RunOnlyIfNetworkAvailable) -Trigger (New-ScheduledTaskTrigger -Weekly -DaysOfWeek Friday -At 12:00)
+
+  # workaround for https://github.com/lycheeverse/lychee/issues/902 and https://github.com/hyperium/hyper/issues/3122
+  #schtasks /Create /SC ONLOGON /TN "RestartHamachi" /TR "powershell.exe -WindowStyle Hidden -Command 'Start-Sleep -Seconds 900; Restart-Service -Name Hamachi2Svc'" /RL HIGHEST
+
+# function checkarchivemultipass { multipass exec primary -- /home/linuxbrew/.linuxbrew/bin/lychee --exclude='vk.com' --exclude='yandex.ru' --exclude='megaten.ru' --max-concurrency 5 /mnt/c_host/Users/$env:USERNAME/Мой` диск/документы/archive-org.txt; mps }
+# function checklinuxmultipass { multipass exec primary -- /home/linuxbrew/.linuxbrew/bin/lychee --exclude='vk.com' --exclude='yandex.ru' --exclude='megaten.ru' --max-concurrency 5 /mnt/c_host/Users/$env:USERNAME/Мой` диск/документы/linux.txt; mps }
+
+  # Invoke-WebRequest -Uri "https://github.com/Romanitho/Winget-AutoUpdate/archive/refs/heads/main.zip" -OutFile "$HOME/Downloads/Winget-AutoUpdate.zip"
+  # Expand-Archive "$HOME/Downloads/Winget-AutoUpdate.zip" -DestinationPath "$HOME/Downloads"
+
+# wsl --manage Ubuntu-22.04 --set-sparse true
