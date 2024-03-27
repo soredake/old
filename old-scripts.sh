@@ -1674,3 +1674,36 @@ curl -L -o C:\Users\user\AppData\Local\Programs\Python\Python312\Scripts\OpenSub
   # Expand-Archive "$HOME/Downloads/Winget-AutoUpdate.zip" -DestinationPath "$HOME/Downloads"
 
 # wsl --manage Ubuntu-22.04 --set-sparse true
+
+
+# installing patched spotify
+# Invoke-Expression "& { $(Invoke-WebRequest -useb 'https://spotx-official.github.io/run.ps1') } -confirm_spoti_recomended_over -new_theme -block_update_on -podcasts_on"
+
+
+# CommandNotFound https://learn.microsoft.com/en-us/windows/powertoys/cmd-not-found https://github.com/microsoft/PowerToys/issues/30818
+Install-Module -Name Microsoft.WinGet.Client
+Enable-ExperimentalFeature -Name PSFeedbackProvider, PSCommandNotFoundSuggestion
+Import-Module $env:ProgramFiles\PowerToys\WinGetCommandNotFound.psd1
+
+
+# latest wsl2 kernel
+# curl -L -o $HOME\wsl2-xanmod-kernel "https://github.com/soredake/xanmod-kernel-WSL2/releases/download/6.7.7-locietta-WSL2-xanmod1.1/bzImage"
+
+# not working on windows 11
+scoop install caffeine
+
+  # Caffeine startup task
+  $trigger = New-ScheduledTaskTrigger -AtLogon
+  $trigger.Delay = 'PT5M'
+  Register-ScheduledTask -Action (New-ScheduledTaskAction -Execute "$HOME\scoop\apps\caffeine\current\caffeine64.exe" -Argument "-allowss -startoff") -TaskName "Caffeine" -Settings (New-ScheduledTaskSettingsSet -StartWhenAvailable -ExecutionTimeLimit 0 -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 1)) -Trigger $trigger
+
+  # works, blocks sleep but allows screen to turn off
+  choco install -y insomnia
+
+function reboottobios { shutdown /r /fw /f /t 0 }
+
+# Workaround for https://github.com/erengy/taiga/issues/1151#issuecomment-1761431682
+taskkill /im Taiga.exe
+Start-Sleep -Seconds 30
+# https://taiga.moe/latest.html
+curl -L -o $env:APPDATA\Taiga\Taiga.exe "https://taiga.moe/latest.php"
