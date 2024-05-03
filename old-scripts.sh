@@ -1254,7 +1254,6 @@ if ($PSVersionTable.PSEdition -ne "Core") {
 
 
 # https://winaero.com/windows-10-deleting-thumbnail-cache/
-# TODO: is this needed?
 # sudo Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail` Cache' -Name 'Autorun' -Value 0 -Force
 
 
@@ -1383,7 +1382,7 @@ sudo reg add 'HKLM\SOFTWARE\Policies\Microsoft\Windows\WcmSvc\GroupPolicy' /v 'f
 // user_pref("browser.link.open_newwindow", 1);
 
 
-iex "& { $((iwr -useb "https://raw.githubusercontent.com/amd64fox/SpotX/main/Install.ps1").Content) } -confirm_spoti_recomended_over -new_theme -block_update_on -podcasts_on -lyrics_stat spotify -cache_limit 2000"
+iex "& { $(iwr -useb 'https://spotx-official.github.io/run.ps1') } -confirm_spoti_recomended_over -new_theme -enhancesongs -block_update_on -podcasts_on -lyrics_stat spotify -cache_limit 2000"
 
 
 # 'Microsoft.549981C3F5F10_8wekyb3d8bbwe' - cortana https://support.microsoft.com/en-us/topic/end-of-support-for-cortana-in-windows-d025b39f-ee5b-4836-a954-0ab646ee1efa?ranMID=24542&OCID=AID2200057_aff_7593_1243925 # 'MicrosoftTeams_8wekyb3d8bbwe' # 9MSSGKG348SP # 'BlueStacks` X'
@@ -1707,3 +1706,11 @@ taskkill /im Taiga.exe
 Start-Sleep -Seconds 30
 # https://taiga.moe/latest.html
 curl -L -o $env:APPDATA\Taiga\Taiga.exe "https://taiga.moe/latest.php"
+
+# File is not existing by default
+winget settings
+# Fix for winget downloading speed https://github.com/microsoft/winget-cli/issues/2124
+($settings = Get-Content -Path "$env:LOCALAPPDATA\Packages\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe\LocalState\settings.json" -Raw | ConvertFrom-Json) | ForEach-Object { if ($_.network -eq $null) { $_ | Add-Member -MemberType NoteProperty -Name 'network' -Value (New-Object PSObject) -Force }; $_.network | Add-Member -MemberType NoteProperty -Name 'downloader' -Value 'wininet' -Force }; $settings | ConvertTo-Json | Set-Content -Path "$env:LOCALAPPDATA\Packages\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe\LocalState\settings.json"
+# https://github.com/microsoft/winget-cli/discussions/4281
+# https://github.com/microsoft/winget-cli/releases/tag/v1.8.924-preview
+($settings = Get-Content -Path "$env:LOCALAPPDATA\Packages\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe\LocalState\settings.json" -Raw | ConvertFrom-Json) | ForEach-Object { if ($_.experimentalFeatures -eq $null) { $_ | Add-Member -MemberType NoteProperty -Name 'experimentalFeatures' -Value (New-Object PSObject) -Force }; $_.experimentalFeatures | Add-Member -MemberType NoteProperty -Name 'sideBySide' -Value $true -Force }; $settings | ConvertTo-Json | Set-Content -Path "$env:LOCALAPPDATA\Packages\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe\LocalState\settings.json"
