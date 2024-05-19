@@ -1714,3 +1714,27 @@ winget settings
 # https://github.com/microsoft/winget-cli/discussions/4281
 # https://github.com/microsoft/winget-cli/releases/tag/v1.8.924-preview
 ($settings = Get-Content -Path "$env:LOCALAPPDATA\Packages\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe\LocalState\settings.json" -Raw | ConvertFrom-Json) | ForEach-Object { if ($_.experimentalFeatures -eq $null) { $_ | Add-Member -MemberType NoteProperty -Name 'experimentalFeatures' -Value (New-Object PSObject) -Force }; $_.experimentalFeatures | Add-Member -MemberType NoteProperty -Name 'sideBySide' -Value $true -Force }; $settings | ConvertTo-Json | Set-Content -Path "$env:LOCALAPPDATA\Packages\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe\LocalState\settings.json"
+
+
+  # I don't need defender https://remontka.pro/windows-defender-turn-off/
+  # Why i disabled defender: https://github.com/microsoft/winget-cli/issues/3505#issuecomment-1666813120 https://github.com/ScoopInstaller/Scoop/wiki/Antivirus-and-Anti-Malware-Problems https://github.com/microsoft/WSL/issues/8995 https://github.com/microsoft/WSL/issues/1932
+  # TODO: https://github.com/microsoft/devhome/issues/1983#issuecomment-1837182515
+  reg add 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender' /v DisableAntiSpyware /t REG_DWORD /d 1 /f
+  reg add 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender' /v ServiceKeepAlive /t REG_DWORD /d 0 /f
+  # reg add 'HKLM\SOFTWARE\Policies\Microsoft\Microsoft Antimalware\SpyNet' /v SubmitSamplesConsent /t REG_DWORD /d 0 /f
+  reg add 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection' /v DisableIOAVProtection /t REG_DWORD /d 1 /f
+  reg add 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection' /v DisableRealtimeMonitoring /t REG_DWORD /d 1 /f
+
+
+# https://remontka.pro/wake-timers-windows/
+# https://winaero.com/windows-11-may-soon-install-monthly-updates-without-a-reboot/
+# powercfg /SETACVALUEINDEX SCHEME_CURRENT 238c9fa8-0aad-41ed-83f4-97be242c8f20 bd3b718a-0680-4d9d-8ab2-e1d2b4ac806d 0
+
+#setx PIPX_BIN_DIR $env:LOCALAPPDATA\Programs\Python\Python312\Scripts
+
+# Configuring scoop to use NanaZip
+#scoop config use_external_7zip true
+#scoop install 7zip
+
+# https://www.elevenforum.com/t/add-or-remove-edit-in-notepad-context-menu-in-windows-11.20485/
+reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" /v "{CA6CC9F1-867A-481E-951E-A28C5E4F01EA}" /t REG_SZ /d "" /f
