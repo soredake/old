@@ -1741,3 +1741,22 @@ winget settings
 
 
   Register-ScheduledTask -Action (New-ScheduledTaskAction -Execute "$env:LOCALAPPDATA\Microsoft\WindowsApps\pwsh.exe" -Argument "$HOME\git\dotfiles_windows\scripts\restart-taiga.ps1") -TaskName "Restart Taiga every day" -Settings (New-ScheduledTaskSettingsSet -StartWhenAvailable -RunOnlyIfNetworkAvailable) -Trigger (New-ScheduledTaskTrigger -Daily -At 09:00)
+
+
+  Add-MpPreference -ExclusionExtension ".cbz", ".cbr", ".jpeg", ".jpg", ".png", ".webp", ".avif", ".jxl", ".gif", ".mp3", ".flac", ".ogg", ".wav", ".mkv", ".avi", ".mp4", ".m4v", ".mpg", ".ts", ".webm", ".parts", ".ass", ".srt", ".vhd", ".vhdx", ".vdi", ".vmdk", ".xci", ".nca", ".nsp", ".torrents"
+
+npm install --global nightlight-cli
+
+  # Night Light is usually not turned off automatically in the morning https://aka.ms/AAqoje8 TODO: this cli tool is not working most of the times
+  # Register-ScheduledTask -Action (New-ScheduledTaskAction -Execute (where.exe run-hidden.exe) -Argument "$env:LOCALAPPDATA\Microsoft\WindowsApps\pwsh.exe -c nightlight off") -TaskName "Turning off the night light in the morning" -Settings (New-ScheduledTaskSettingsSet -StartWhenAvailable) -Trigger (New-ScheduledTaskTrigger -Daily -At 08:00)
+
+#psc config update 0
+#psc config module_update 0
+
+# CompletionPredictor is breaks PSCompletions https://github.com/PowerShell/CompletionPredictor/issues/37
+# PSCompletions is no longer installed as I don't use it, and it adds 2-3 seconds to load delay
+#psc add npm winget scoop
+psc update *
+
+# https://github.com/PowerShell/CompletionPredictor?tab=readme-ov-file#use-the-predictor
+#Set-PSReadLineOption -PredictionSource HistoryAndPlugin
