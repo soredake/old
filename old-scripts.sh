@@ -1760,3 +1760,7 @@ psc update *
 
 # https://github.com/PowerShell/CompletionPredictor?tab=readme-ov-file#use-the-predictor
 #Set-PSReadLineOption -PredictionSource HistoryAndPlugin
+
+  # OneDrive can't backup symlinks
+  # NOTE: seems to be fixed now
+  #New-Item -ItemType HardLink -Path "$documentsPath\PowerShell\Profile.ps1" -Target "$HOME\git\dotfiles_windows\dotfiles\Documents\PowerShell\Profile.ps1"
