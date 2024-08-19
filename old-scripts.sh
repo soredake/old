@@ -1728,7 +1728,8 @@ winget settings
 
 # https://remontka.pro/wake-timers-windows/
 # https://winaero.com/windows-11-may-soon-install-monthly-updates-without-a-reboot/
-# powercfg /SETACVALUEINDEX SCHEME_CURRENT 238c9fa8-0aad-41ed-83f4-97be242c8f20 bd3b718a-0680-4d9d-8ab2-e1d2b4ac806d 0
+powercfg /SETDCVALUEINDEX SCHEME_CURRENT 238c9fa8-0aad-41ed-83f4-97be242c8f20 bd3b718a-0680-4d9d-8ab2-e1d2b4ac806d 0
+powercfg /SETACVALUEINDEX SCHEME_CURRENT 238c9fa8-0aad-41ed-83f4-97be242c8f20 bd3b718a-0680-4d9d-8ab2-e1d2b4ac806d 0
 
 #setx PIPX_BIN_DIR $env:LOCALAPPDATA\Programs\Python\Python312\Scripts
 
@@ -1764,3 +1765,29 @@ psc update *
   # OneDrive can't backup symlinks
   # NOTE: seems to be fixed now
   #New-Item -ItemType HardLink -Path "$documentsPath\PowerShell\Profile.ps1" -Target "$HOME\git\dotfiles_windows\dotfiles\Documents\PowerShell\Profile.ps1"
+
+  # Start plex-mpv-shim at logon
+  # https://github.com/iwalton3/plex-mpv-shim/issues/118
+  #Register-ScheduledTask -Action (New-ScheduledTaskAction -Execute (where.exe run-hidden.exe) -Argument "$env:LOCALAPPDATA\Microsoft\WindowsApps\pwsh.exe -c Start-Sleep -Seconds 120 && Start-Process -FilePath $HOME\scoop\apps\plex-mpv-shim\current\run.exe -WorkingDirectory $HOME\scoop\apps\plex-mpv-shim\current") -TaskName "plex-mpv-shim" -Settings (New-ScheduledTaskSettingsSet -StartWhenAvailable -ExecutionTimeLimit 0 -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 1)) -Trigger (New-ScheduledTaskTrigger -AtLogon)
+
+  # Start Plex For Windows at logon
+  # https://forums.plex.tv/t/add-autostart-on-logon-option-to-plex-for-windows/880558
+  #Register-ScheduledTask -Action (New-ScheduledTaskAction -Execute "$env:ProgramFiles\Plex\Plex\Plex.exe" -WorkingDirectory "$env:ProgramFiles\Plex\Plex") -TaskName "Plex For Windows" -Settings (New-ScheduledTaskSettingsSet -StartWhenAvailable) -Trigger (New-ScheduledTaskTrigger -AtLogon)
+
+
+# yoink installation
+$archivePath = "$HOME/Downloads/yoink_windows_amd64.zip"
+$desiredFilePath = "$HOME/yoink.exe"
+$tempDir = "$HOME/Downloads/yoink/"
+Invoke-WebRequest -Uri "https://github.com/MrMarble/yoink/releases/download/v0.5.0/yoink_windows_amd64.zip" -OutFile "$HOME/Downloads/yoink_windows_amd64.zip"
+New-Item -ItemType Directory -Path $tempDir -Force
+Expand-Archive -Path $archivePath -DestinationPath $tempDir
+$extractedFilePath = Join-Path -Path $tempDir -ChildPath "yoink.exe"
+Move-Item -Path $extractedFilePath -Destination $desiredFilePath
+Remove-Item -Path $tempDir -Recurse -Force
+
+  # This package is unmaintained and now (18.07.2024) is broken, I now update chocolatey packages with topgrade
+  # choco install -y choco-upgrade-all-at --params "'/WEEKLY:yes /DAY:SUN /TIME:10:00'"
+
+  # https://www.elevenforum.com/t/change-automatic-maintenance-time-in-windows-11.16687/
+  #reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\Maintenance" /v "Activation Boundary" /t REG_SZ /d "2001-01-01T08:00:00" /f
