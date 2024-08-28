@@ -1791,3 +1791,28 @@ Remove-Item -Path $tempDir -Recurse -Force
 
   # https://www.elevenforum.com/t/change-automatic-maintenance-time-in-windows-11.16687/
   #reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\Maintenance" /v "Activation Boundary" /t REG_SZ /d "2001-01-01T08:00:00" /f
+
+
+# Task for restarting Plex For Windows and plex-mpv-shim after waking pc from sleep or logon
+sudo {
+  Unregister-ScheduledTask -TaskName "Restarting plex for windows and plex-mpv-shim" -Confirm:$false
+  # https://stackoverflow.com/a/67123362
+  # https://learn.microsoft.com/en-us/answers/questions/794854/run-a-program-every-time-the-computer-comes-out-of
+  # Create list of triggers, including AtLogOn and custom event trigger
+  $triggers = @(New-ScheduledTaskTrigger -AtLogOn)
+
+  # Define custom event trigger
+  $subscription = @"
+<QueryList><Query Id="0" Path="System"><Select Path="System">*[System[Provider[@Name='Microsoft-Windows-Power-Troubleshooter'] and EventID=1]]</Select></Query></QueryList>
+"@
+
+  # Register the custom event trigger using CIM
+  $CIMTriggerClass = Get-CimClass -ClassName MSFT_TaskEventTrigger -Namespace Root/Microsoft/Windows/TaskScheduler
+  $trigger = New-CimInstance -CimClass $CIMTriggerClass -ClientOnly
+  $trigger.Subscription = $subscription
+  $trigger.Enabled = $true
+  $triggers += $trigger
+
+  # Register the scheduled task
+  Register-ScheduledTask -Principal (New-ScheduledTaskPrincipal -UserID "$env:USERDOMAIN\$env:USERNAME" -RunLevel Highest) -Action (New-ScheduledTaskAction -Execute (where.exe run-hidden.exe) -Argument "$env:LOCALAPPDATA\Microsoft\WindowsApps\pwsh.exe $HOME\git\dotfiles_windows\scripts\restart-plex-player-and-shim.ps1") -TaskName "Restarting plex for windows and plex-mpv-shim" -Settings (New-ScheduledTaskSettingsSet -StartWhenAvailable) -Trigger $triggers
+}
