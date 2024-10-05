@@ -1816,3 +1816,13 @@ sudo {
   # Register the scheduled task
   Register-ScheduledTask -Principal (New-ScheduledTaskPrincipal -UserID "$env:USERDOMAIN\$env:USERNAME" -RunLevel Highest) -Action (New-ScheduledTaskAction -Execute (where.exe run-hidden.exe) -Argument "$env:LOCALAPPDATA\Microsoft\WindowsApps\pwsh.exe $HOME\git\dotfiles_windows\scripts\restart-plex-player-and-shim.ps1") -TaskName "Restarting plex for windows and plex-mpv-shim" -Settings (New-ScheduledTaskSettingsSet -StartWhenAvailable) -Trigger $triggers
 }
+
+
+# rclone sync -P $env:LOCALAPPDATA\Plex "$HOME\Мой диск\документы\backups\plex" --delete-excluded --exclude "cache/updates/"
+
+
+  # Winget-AutoUpdate installation
+  # NOTE: https://github.com/Romanitho/Winget-AutoUpdate/issues/625
+  git clone --depth=1 "https://github.com/Romanitho/Winget-AutoUpdate" "$HOME/Downloads/Winget-AutoUpdate"
+  ~\Downloads\Winget-AutoUpdate\Sources\WAU\Winget-AutoUpdate-Install.ps1 -StartMenuShortcut -Silent -InstallUserContext -NotificationLevel Full -UpdatesInterval BiDaily -DoNotUpdate -UpdatesAtTime 11AM
+  Remove-Item -Path C:\ProgramData\Winget-AutoUpdate\excluded_apps.txt
