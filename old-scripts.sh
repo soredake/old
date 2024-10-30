@@ -1826,3 +1826,88 @@ sudo {
   git clone --depth=1 "https://github.com/Romanitho/Winget-AutoUpdate" "$HOME/Downloads/Winget-AutoUpdate"
   ~\Downloads\Winget-AutoUpdate\Sources\WAU\Winget-AutoUpdate-Install.ps1 -StartMenuShortcut -Silent -InstallUserContext -NotificationLevel Full -UpdatesInterval BiDaily -DoNotUpdate -UpdatesAtTime 11AM
   Remove-Item -Path C:\ProgramData\Winget-AutoUpdate\excluded_apps.txt
+
+  # Task for restarting qBittorrent every day until https://github.com/qbittorrent/qBittorrent/issues/20305 is fixed
+  Unregister-ScheduledTask -TaskName "Restart qBittorrent every day" -Confirm:$false
+  Register-ScheduledTask -Action (New-ScheduledTaskAction -Execute (where.exe run-hidden.exe) -Argument "$env:LOCALAPPDATA\Microsoft\WindowsApps\pwsh.exe -File $HOME\git\dotfiles_windows\scripts\restart-qbittorrent.ps1") -TaskName "Restart qBittorrent every day" -Settings (New-ScheduledTaskSettingsSet -StartWhenAvailable -RunOnlyIfNetworkAvailable) -Trigger (New-ScheduledTaskTrigger -Daily -At 09:00), (New-ScheduledTaskTrigger -Daily -At 16:00)
+
+
+# Games and emulators
+7z a -up0q0r2x2y2z1w2 -t7z -m0=lzma2 -mmt=16 -mx=5 "$HOME\Мой диск\документы\backups\Playnite.7z" "$env:APPDATA\Playnite" -xr!'Playnite\library\files\*' -xr!'Playnite\browsercache\*'
+7z a -up0q0r2x2y2z1w2 -t7z -m0=lzma2 -mmt=16 -mx=5 "$HOME\Мой диск\документы\saves\RPCS3.7z" $env:ChocolateyToolsLocation\RPCS3\dev_hdd0\home\00000001\savedata
+7z a -up0q0r2x2y2z1w2 -t7z -m0=lzma2 -mmt=16 -mx=5 "$HOME\Мой диск\документы\saves\EMPRESS.7z" "$env:PUBLIC\Documents\EMPRESS"
+7z a -up0q0r2x2y2z1w2 -t7z -m0=lzma2 -mmt=16 -mx=5 "$HOME\Мой диск\документы\saves\OnlineFix.7z" "$env:PUBLIC\Documents\OnlineFix"
+7z a -up0q0r2x2y2z1w2 -t7z -m0=lzma2 -mmt=16 -mx=5 "$HOME\Мой диск\документы\saves\CODEX.7z" "$env:PUBLIC\Documents\Steam\CODEX"
+# 7z a -up0q0r2x2y2z1w2 -t7z -m0=lzma2 -mmt=16 -mx=5 "$HOME\Мой диск\документы\saves\PPSSPP.7z" "$documentsPath\PPSSPP"
+7z a -up0q0r2x2y2z1w2 -t7z -m0=lzma2 -mmt=16 -mx=5 "$HOME\Мой диск\документы\saves\GoldbergSteamEmuSaves.7z" "$env:APPDATA\Goldberg SteamEmu Saves"
+7z a -up0q0r2x2y2z1w2 -t7z -m0=lzma2 -mmt=16 -mx=5 "$HOME\Мой диск\документы\saves\ryujinx.7z" "$HOME\scoop\persist\ryujinx\portable\bis\user\save"
+7z a -up0q0r2x2y2z1w2 -t7z -m0=lzma2 -mmt=16 -mx=5 "$HOME\Мой диск\документы\saves\sudachi.7z" "$HOME\scoop\apps\sudachi\current\user\nand\user\save"
+# https://github.com/Abd-007/Switch-Emulators-Guide/blob/main/Yuzu.md https://github.com/Abd-007/Switch-Emulators-Guide/blob/main/Ryujinx.md
+rclone sync -P $HOME\scoop\apps\sudachi\current\user\nand\system\save\8000000000000010\su\avators\profiles.dat "$HOME\Мой диск\документы\backups\sudachi"
+rclone sync -P $HOME\scoop\persist\ryujinx\portable\system\Profiles.json "$HOME\Мой диск\документы\backups\ryujinx"
+
+
+7z a -up0q0r2x2y2z1w2 -t7z -m0=lzma2 -mmt=16 -mx=5 "$HOME\Мой диск\документы\backups\plex.7z" "$env:LOCALAPPDATA\Plex" -xr!'Plex\cache\updates\*'
+7z a -up0q0r2x2y2z1w2 -t7z -m0=lzma2 -mmt=16 -mx=5 "$HOME\Мой диск\документы\backups\AIMP.7z" "$env:APPDATA\AIMP" -xr!'AIMP\UpdateInstaller.exe'
+
+#7z a -up0q0r2x2y2z1w2 -t7z -m0=lzma2 -mmt=16 -mx=9 "$HOME\Мой диск\документы\backups\64gram.7z" "$env:APPDATA\64Gram Desktop\tdata" -xr!'tdata\user_data\media_cache' -xr!'tdata\user_data#2\media_cache' -xr!'tdata\user_data#3\media_cache'
+
+rclone sync -P $env:APPDATA\Taiga\data "$HOME\Мой диск\документы\backups\Taiga" --delete-excluded --exclude "db/image/" --exclude "theme/"
+7z a -up0q0r2x2y2z1w2 -t7z -m0=lzma2 -mmt=16 -mx=5 "$HOME\Мой диск\документы\backups\Windhawk.7z" "C:\ProgramData\Windhawk"
+
+# Software needs to be stopped to correctly backup it's data
+#taskkill /T /f /im run.exe
+# taskkill /T /f /im plex.exe
+taskkill /T /f /im "Plex Media Server.exe"
+taskkill /T /im Playnite.DesktopApp.exe
+taskkill /T /im AIMP.exe
+taskkill /T /f /im windhawk.exe
+
+# Starting killed software back
+Start-Process -FilePath "$env:ProgramFiles\Plex\Plex Media Server\Plex Media Server.exe" -WindowStyle Hidden
+Start-Process -FilePath "$env:ProgramFiles\Windhawk\windhawk.exe" -WorkingDirectory "$env:ProgramFiles\Windhawk"
+Start-Process -FilePath "$env:ProgramFiles\AIMP\AIMP.exe"
+Start-Sleep -Seconds 5
+nircmd win close title Windhawk
+#Start-Sleep -Seconds 30
+#Start-Process -FilePath $HOME\scoop\apps\plex-mpv-shim\current\run.exe -WorkingDirectory $HOME\scoop\apps\plex-mpv-shim\current
+#Start-Sleep -Seconds 30
+# NOTE: Plex For Windows cannot started minimized
+# NOTE: Plex For Windows needs to be started as admin to avoid UAC prompt https://www.reddit.com/r/PleX/comments/q8un5s/is_there_any_way_to_stop_plex_from_trying_to/
+#Start-Process -FilePath "$env:ProgramFiles\Plex\Plex\Plex.exe" -Verb RunAs
+#Start-Sleep -Seconds 5
+#nircmd win min process Plex.exe
+# Workaround for https://github.com/iamkroot/trakt-scrobbler/issues/305
+#trakts start --restart
+
+
+
+  # NOTE: no longer needed after 5.0.1 https://www.qbittorrent.org/news#mon-oct-28th-2024---qbittorrent-v5.0.1-release
+  # Edit qbittorrent shortcut to fix https://github.com/qbittorrent/qBittorrent/issues/21423
+  # https://github.com/qbittorrent/qBittorrent/issues/21423#issuecomment-2383875303
+  $shortcutPath = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\qBittorrent\qBittorrent.lnk"
+  $WScriptShell = New-Object -ComObject WScript.Shell
+  $shortcut = $WScriptShell.CreateShortcut($shortcutPath)
+  $shortcut.TargetPath = $shortcut.TargetPath
+  $shortcut.Arguments = "-style WindowsVista"
+  $shortcut.Save()
+  # And autostart entry
+  reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v qBittorrent /t REG_SZ /d '"C:\Program Files\qBittorrent\qbittorrent.exe" "--profile=" "--configuration=" "--style=WindowsVista"' /f
+
+
+  # Set hibernation timeout to 13 hours
+  # https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/powercfg-command-line-options#change-or-x
+  # NOTE: this is needed only when hypervisor boot is enabled
+  #powercfg /change /hibernate-timeout-ac 780
+  #powercfg /change /hibernate-timeout-dc 780
+
+
+# curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash
+# eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+# brew install lychee
+
+
+rclone sync -P "${env:ProgramFiles(x86)}\MSI Afterburner\Profiles" "$HOME\Мой диск\документы\backups\msi_afterburner"
+rclone sync -P "${env:ProgramFiles(x86)}\RivaTuner Statistics Server\Profiles" "$HOME\Мой диск\документы\backups\rtss"
+reg export "HKEY_LOCAL_MACHINE\Software\Icaros" "$HOME\Мой диск\документы\backups\xanashi_icaros\xanashi_icaros_HKLM.reg" /y
+reg export "HKEY_CURRENT_USER\Software\Icaros" "$HOME\Мой диск\документы\backups\xanashi_icaros\xanashi_icaros_HKCU.reg" /y
